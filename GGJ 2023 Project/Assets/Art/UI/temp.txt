@@ -1,0 +1,1 @@
+this file exists so the empty folder can be committed to git. Delete this once assets have been added.
