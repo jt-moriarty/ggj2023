@@ -1,0 +1,23 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# https://www.codeandweb.com/texturepacker/unity
+#
+# $TexturePacker:SmartUpdate:5c7c1c90cb5427f83182069956060ec7:6b540880adb8145375130ec2f710913e:974cc7ce67df8d113b3e08987486b644$
+#
+:format=40300
+:texture=dirt.png
+:size=256x256
+:pivotpoints=enabled
+:borders=disabled
+
+dirtBottom1;0;192;64;64; 0.5;0.25; 0;0;0;0
+dirtBottom2;64;192;64;64; 0.5;0.25; 0;0;0;0
+dirtBottom3;128;192;64;64; 0.5;0.25; 0;0;0;0
+dirtMid1;192;192;64;64; 0.5;0.25; 0;0;0;0
+dirtMid2;0;128;64;64; 0.5;0.25; 0;0;0;0
+dirtMid3;64;128;64;64; 0.5;0.25; 0;0;0;0
+dirtTop1;128;128;64;64; 0.5;0.25; 0;0;0;0
+dirtTop2;192;128;64;64; 0.5;0.25; 0;0;0;0
+dirtTop3;0;64;64;64; 0.5;0.25; 0;0;0;0
