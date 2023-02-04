@@ -1,0 +1,20 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# https://www.codeandweb.com/texturepacker/unity
+#
+# $TexturePacker:SmartUpdate:727fe9fc93d1eb16c1400dbe987984fe:a75df6075b839e77bbd23bc7b7c96074:41dd98f1c6a2e16d34f3dc16189ac7ab$
+#
+:format=40300
+:texture=covers.png
+:size=128x256
+:pivotpoints=enabled
+:borders=disabled
+
+coverLeaves1;0;192;64;64; 0.5;0.25; 0;0;0;0
+coverLeaves2;64;192;64;64; 0.5;0.25; 0;0;0;0
+coverLeaves3;0;128;64;64; 0.5;0.25; 0;0;0;0
+coverMoss;64;128;64;64; 0.5;0.25; 0;0;0;0
+coverRocks1;0;64;64;64; 0.5;0.25; 0;0;0;0
+coverRocks2;64;64;64;64; 0.5;0.25; 0;0;0;0

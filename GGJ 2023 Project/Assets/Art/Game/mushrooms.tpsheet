@@ -1,0 +1,26 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# https://www.codeandweb.com/texturepacker/unity
+#
+# $TexturePacker:SmartUpdate:1256e5c3ab63c794907bb7f3518bd118:7c912e6b60ffd9023d36ae4a84129e95:14f058cf106df0e57ca6270231a0647e$
+#
+:format=40300
+:texture=mushrooms.png
+:size=256x512
+:pivotpoints=enabled
+:borders=disabled
+
+boleteAdultHealthy;0;384;64;128; 0.5;0.125; 0;0;0;0
+boleteAdultWithered;64;384;64;128; 0.5;0.125; 0;0;0;0
+boleteBabyHealthy;128;384;64;128; 0.5;0.125; 0;0;0;0
+boleteBabyWithered;192;384;64;128; 0.5;0.125; 0;0;0;0
+grisetteAdultHealthy;0;256;64;128; 0.5;0.125; 0;0;0;0
+grisetteAdultWithered;64;256;64;128; 0.5;0.125; 0;0;0;0
+grisetteBabyHealthy;128;256;64;128; 0.5;0.125; 0;0;0;0
+grisetteBabyWithered;192;256;64;128; 0.5;0.125; 0;0;0;0
+inkyAdultHealthy;0;128;64;128; 0.5;0.125; 0;0;0;0
+inkyAdultWithered;64;128;64;128; 0.5;0.125; 0;0;0;0
+inkyBabyHealthy;128;128;64;128; 0.5;0.125; 0;0;0;0
+inkyBabyWithered;192;128;64;128; 0.5;0.125; 0;0;0;0
