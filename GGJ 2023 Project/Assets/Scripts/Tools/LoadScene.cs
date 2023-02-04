@@ -15,7 +15,7 @@ public class LoadScene : MonoBehaviour
     // whether the scene should be loaded immediately or asynchronously
     [SerializeField] private bool _async;
 
-    void OnEnable ()
+    void OnEnable()
     {
         if (_async)
         {
@@ -27,19 +27,19 @@ public class LoadScene : MonoBehaviour
     }
 
     // loads scene with specified name
-    public void Load (string p_sceneName)
+    public void Load(string p_sceneName)
     {
         SceneManager.LoadScene(p_sceneName);
     }
 
     // loads scene name set in the inspector
-    public void Load ()
+    public void Load()
     {
         Load(_sceneName);
     }
 
     // loads scene with specified name asynchronously
-    public void LoadAsync (string p_sceneName)
+    public void LoadAsync(string p_sceneName)
     {
         SceneManager.LoadSceneAsync(p_sceneName);
     }
