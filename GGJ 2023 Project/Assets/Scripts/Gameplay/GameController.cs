@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -31,9 +32,40 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private Tilemap[] baseTilemaps;
 
+    [SerializeField]
+    private Tilemap rootTilemap;
+
+    [SerializeField]
+    private Tile[] rootTiles;
+    
+    private List<Image> uiTiles;
+
+    [SerializeField]
+    private int selectedTile = 0;
+
+    [SerializeField]
+    private Transform uiTileGrid;
+
     // Start is called before the first frame update
     void Start()
     {
+        int i = 0;
+        uiTiles = new List<Image>();
+        foreach (Tile tile in rootTiles)
+        {
+            GameObject uiTile = new GameObject("UI Tile");
+            uiTile.transform.parent = uiTileGrid;
+            uiTile.transform.localScale = Vector3.one;
+
+            Image uiImage = uiTile.AddComponent<Image>();
+            uiImage.sprite = tile.sprite;
+            uiTiles.Add(uiImage);
+            i++;
+        }
+
+        SetSelectedTile(selectedTile);
+
+
         StartGame();
     }
 
@@ -44,18 +76,41 @@ public class GameController : MonoBehaviour
 
         // Change the active later.
         var keyboard = Keyboard.current;
+        var mouse = Mouse.current;
 
         if (keyboard.upArrowKey.wasPressedThisFrame && CurrentLayer < TilemapLayer.Surface)
         {
-            //CurrentLayer++;
             SetActiveLayer(++CurrentLayer);
         }
         else if (keyboard.downArrowKey.wasPressedThisFrame && CurrentLayer > TilemapLayer.Base)
         {
-            //CurrentLayer--;
             SetActiveLayer(--CurrentLayer);
         }
-        //SetActiveLayer(CurrentLayer);
+
+        if (keyboard.leftArrowKey.wasPressedThisFrame)
+        {
+            selectedTile--;
+            if (selectedTile < 0)
+                selectedTile = uiTiles.Count - 1;
+        }
+        else if (keyboard.rightArrowKey.wasPressedThisFrame)
+        {
+            selectedTile++;
+            if (selectedTile > uiTiles.Count - 1)
+                selectedTile = 0;
+        }
+
+        if (mouse.leftButton.wasPressedThisFrame)
+        {
+            Debug.Log("place TILE");
+            Vector3 pos = Camera.main.ScreenToWorldPoint(mouse.position.ReadValue());
+            Debug.Log(pos);
+            Debug.Log(selectedTile);
+            pos.z = 0;
+            rootTilemap.SetTile(rootTilemap.WorldToCell(pos), rootTiles[selectedTile]);
+        }
+
+        SetSelectedTile(selectedTile);
 
         Energy -= energyDecay * Time.deltaTime;
 
@@ -64,6 +119,18 @@ public class GameController : MonoBehaviour
             // Game over
             // TODO: more elaborate sequence or animation, for now just scene change.
             SceneManager.LoadScene("GameOverScene");
+        }
+    }
+
+    void SetSelectedTile (int newIndex)
+    {
+        int i = 0;
+        foreach (Image uiImage in uiTiles)
+        {
+            Color tileColor = uiImage.color;
+            tileColor.a = i == newIndex ? 1.0f : 0.5f;
+            uiImage.color = tileColor;
+            i++;
         }
     }
 
