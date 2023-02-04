@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PipeController<ResourceEnum> where ResourceEnum : System.Enum
 {
-    HashSet<PipeNode<ResourceEnum>> allPipes;
-    PipeNode<ResourceEnum> core;
+    ICollection<PipeNode<ResourceEnum>> allPipes = new HashSet<PipeNode<ResourceEnum>>();
+    ICollection<PipeNode<ResourceEnum>> cores = new HashSet<PipeNode<ResourceEnum>>();
 
     int maxFlowPerStep;
     OnFlow flowDelegate;
@@ -15,125 +15,90 @@ public class PipeController<ResourceEnum> where ResourceEnum : System.Enum
     public PipeController(int maxFlowPerStep, OnFlow flowDelegate)
     {
         this.maxFlowPerStep = maxFlowPerStep;
-        core = new PipeNode<ResourceEnum>(new List<PipeNode<ResourceEnum>>(), true, "core");
-        allPipes = new HashSet<PipeNode<ResourceEnum>>{core};
         this.flowDelegate = flowDelegate;
     }
 
-    public PipeNode<ResourceEnum> CreateVacancy(List<PipeNode<ResourceEnum>> connectedAdjacents, String name)
+    public PipeNode<ResourceEnum> CreateNonCore(String name)
     {
-        var pipe = new PipeNode<ResourceEnum>(connectedAdjacents, false, name);
+        var pipe = new PipeNode<ResourceEnum>(name);
         allPipes.Add(pipe);
-        UpdateDistances();
 
         return pipe;
     }
 
-    public PipeNode<ResourceEnum> GetCore()
+    public PipeNode<ResourceEnum> CreateCore(String name)
     {
+        PipeNode<ResourceEnum> core = this.CreateNonCore(name);
+        cores.Add(core);
         return core;
     }
 
-    private void UpdateDistances()
+    public void SetAdjacency(PipeNode<ResourceEnum> destination, IEnumerable<PipeNode<ResourceEnum>> sources, bool isAdjacent)
     {
-        foreach (var node in allPipes)
+        ICollection<PipeNode<ResourceEnum>> adjacencies = destination.GetAdjacencies();
+        if (isAdjacent)
         {
-            node.SetDistance(-1);
-        }
-        core.SetDistance(0);
-
-        var checkQueue = new Queue<PipeNode<ResourceEnum>>();
-        checkQueue.Enqueue(core);
-        while (checkQueue.Count > 0)
-        {
-            var currentPipe = checkQueue.Dequeue();
-            var curDist = currentPipe.GetDistance();
-            var neighDist = curDist + 1;
-
-            foreach (var adj in currentPipe.GetAdjacencies())
+            foreach (var source in sources)
             {
-                if (currentPipe.IsBlockedWith(adj))
-                {
-                    continue;
-                }
-                if (adj.GetDistance() == -1)
-                {
-                    adj.SetDistance(neighDist);
-                    checkQueue.Enqueue(adj);
-                }
+                adjacencies.Add(source);
             }
         }
-
-        foreach (var node in allPipes)
+        else
         {
-            node.SortAdjacents();
-        }
-    }
-
-    public void UpdateAdjacencies()
-    {
-        Debug.Log("If this gets called more than once, please reconsider");
-        UpdateDistances();
-    }
-
-    public void UpdateAdjacencies(List<NodePair> unblockedPairs, List<NodePair> newlyBlockedPairs)
-    {
-        foreach (var pair in unblockedPairs)
-        {
-            pair.occupiedNode.UnblockAdjacency(pair.otherNode);
-            pair.occupiedNode.SetVacant(false);
-        }
-
-        foreach (var pair in newlyBlockedPairs)
-        {
-            pair.occupiedNode.BlockAdjacency(pair.otherNode);
-            pair.occupiedNode.SetVacant(false);
-        }
-
-        UpdateDistances();
-    }
-
-    public void SetAsVacant(PipeNode<ResourceEnum> newlyVacantNode)
-    {
-        newlyVacantNode.IsVacant();
-        foreach (var adj in newlyVacantNode.GetAdjacencies())
-        {
-            newlyVacantNode.UnblockAdjacency(adj);
+            foreach (var source in sources)
+            {
+                adjacencies.Remove(source);
+            }
         }
     }
 
     public void DoFlows()
     {
-        var visited = new HashSet<PipeNode<ResourceEnum>>();
-
-        var checkQueue = new Queue<PipeNode<ResourceEnum>>();
-        checkQueue.Enqueue(core);
-        while (checkQueue.Count > 0)
+        foreach (var node in allPipes) 
         {
-            var currentPipe = checkQueue.Dequeue();
-            visited.Add(currentPipe);            
+            node.SetDistance(-1);
+        }
 
-            foreach (var adj in currentPipe.GetAdjacencies())
+        foreach (var core in cores)
+        {
+            core.SetDistance(0);
+
+            var visited = new HashSet<PipeNode<ResourceEnum>>();
+
+            // could just check all of queue but this might be faster in very connected situation
+            var enqueued = new HashSet<PipeNode<ResourceEnum>>();
+
+            var checkQueue = new Queue<PipeNode<ResourceEnum>>();
+            checkQueue.Enqueue(core);
+            while (checkQueue.Count > 0)
             {
-                if (currentPipe.IsBlockedWith(adj) || visited.Contains(adj))
-                {
-                    continue;
-                }
+                var currentPipe = checkQueue.Dequeue();
+                visited.Add(currentPipe);
 
-                foreach (ResourceEnum resourceType in System.Enum.GetValues(typeof(ResourceEnum)))
+                foreach (var adj in currentPipe.GetAdjacencies())
                 {
-                    if (adj.GetDestination(resourceType, out var destination, out int availableFlow))
+                    //dont absorb from a tile that has already done an absorption
+                    if (visited.Contains(adj))
                     {
-                        int amount = Mathf.Min(availableFlow, maxFlowPerStep);
-                        
-                        adj.MoveResource(destination, resourceType, amount);
-                        flowDelegate(adj, destination, resourceType, amount);
+                        continue;
                     }
-                }
 
-                if (!adj.IsVacant())
-                {
-                    checkQueue.Enqueue(adj);
+                    foreach (ResourceEnum resourceType in System.Enum.GetValues(typeof(ResourceEnum)))
+                    {
+                        int availableFlow = currentPipe.GetAvailableFlowAmount(adj, resourceType);
+                        if (availableFlow > 0)
+                        {
+                            int amount = Mathf.Min(availableFlow, maxFlowPerStep);
+
+                            adj.MoveResource(currentPipe, resourceType, amount);
+                            flowDelegate(adj, currentPipe, resourceType, amount);
+                        }
+                    }
+
+                    if (!enqueued.Contains(adj)) {
+                        checkQueue.Enqueue(adj);
+                        enqueued.Add(adj);
+                    }
                 }
             }
         }
