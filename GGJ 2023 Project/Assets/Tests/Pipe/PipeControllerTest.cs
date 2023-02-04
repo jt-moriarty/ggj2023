@@ -132,7 +132,7 @@ public class PipeControllerTest
             new List<PC.NodePair>()
             {
                 // we're not removing any existing boundaries here, only creating new ones
-                // in an event of an 8 way pipe or a shape that only blocks access to walls,
+                // in an event of a 6 way pipe or a shape that only blocks access to walls,
                 // you can put something here to indicate the spot is no longer vacant but has no meaningful blocks.
             },
             new List<PC.NodePair>() {
