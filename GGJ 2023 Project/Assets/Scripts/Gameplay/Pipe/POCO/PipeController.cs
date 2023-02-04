@@ -15,14 +15,14 @@ public class PipeController<ResourceEnum> where ResourceEnum : System.Enum
     public PipeController(int maxFlowPerStep, OnFlow flowDelegate)
     {
         this.maxFlowPerStep = maxFlowPerStep;
-        core = new PipeNode<ResourceEnum>(new List<PipeNode<ResourceEnum>>(), true);
+        core = new PipeNode<ResourceEnum>(new List<PipeNode<ResourceEnum>>(), true, "core");
         allPipes = new HashSet<PipeNode<ResourceEnum>>{core};
         this.flowDelegate = flowDelegate;
     }
 
-    public PipeNode<ResourceEnum> CreateVacancy(List<PipeNode<ResourceEnum>> connectedAdjacents)
+    public PipeNode<ResourceEnum> CreateVacancy(List<PipeNode<ResourceEnum>> connectedAdjacents, String name)
     {
-        var pipe = new PipeNode<ResourceEnum>(connectedAdjacents, false);
+        var pipe = new PipeNode<ResourceEnum>(connectedAdjacents, false, name);
         allPipes.Add(pipe);
         UpdateDistances();
 

@@ -9,6 +9,9 @@ public class PipeNode<ResourceEnum> where ResourceEnum : System.Enum
     private HashSet<PipeNode<ResourceEnum>> blockedAdjacents;
     private int distanceFromCore;
     private Dictionary<ResourceEnum, int> resourceState;
+    private readonly string name;
+
+    override public string ToString() { return name; }
 
     private bool IsDisconnected { get { return distanceFromCore > -1; } }
 
@@ -60,7 +63,7 @@ public class PipeNode<ResourceEnum> where ResourceEnum : System.Enum
     /**
      * Please don't call this outside PipeController.
      */
-    public PipeNode(List<PipeNode<ResourceEnum>> adjacents, bool isCore)
+    public PipeNode(List<PipeNode<ResourceEnum>> adjacents, bool isCore, string name)
     {
         resourceState = new Dictionary<ResourceEnum, int>();
         foreach(ResourceEnum resourceType in System.Enum.GetValues(typeof(ResourceEnum)))
@@ -77,6 +80,7 @@ public class PipeNode<ResourceEnum> where ResourceEnum : System.Enum
 
         this.isCore = isCore;
         isVacant = !isCore;
+        this.name = name;
     }
 
 

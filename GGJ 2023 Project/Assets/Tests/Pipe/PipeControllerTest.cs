@@ -63,7 +63,7 @@ public class PipeControllerTest
                             neighs.Add(core);
                         }
                     }
-                    grid[z,y,x] = controller.CreateVacancy(neighs);
+                    grid[z, y, x] = controller.CreateVacancy(neighs, $"({z},{y},{x})");
                 }
             }
         }
@@ -95,6 +95,7 @@ public class PipeControllerTest
         // food spawns at  z,y,x = 1,1,0
         grid[1, 1, 0].AddResource(WaterAndFoodResources.food, 5);
 
+        Debug.Log("Flowing...");
         controller.DoFlows();
 
         // confirm that there is now 3 food in the core and 2 at the original place, and 0 in another place
@@ -102,6 +103,7 @@ public class PipeControllerTest
         Assert.That(grid[1, 1, 0].GetResource(WaterAndFoodResources.food), Is.EqualTo(2));
         Assert.That(grid[0, 0, 0].GetResource(WaterAndFoodResources.food), Is.EqualTo(0));
 
+        Debug.Log("Flowing...");
         controller.DoFlows();
 
         // confirm that food has not moved
@@ -112,6 +114,7 @@ public class PipeControllerTest
         // water spawns at  z,y,x = 2,2,1
         grid[2, 2, 1].AddResource(WaterAndFoodResources.water, 2);
 
+        Debug.Log("Flowing...");
         controller.DoFlows();
 
         // confirm that water has not moved
@@ -122,7 +125,8 @@ public class PipeControllerTest
 
         //Add elbow pipe at 1,2,1 that create path from 2,2,1 to core
         controller.UpdateAdjacencies(
-            new List<PipeController<WaterAndFoodResources>.NodePair>() {
+            new List<PipeController<WaterAndFoodResources>.NodePair>()
+            {
                 // we're not removing any existing boundaries here, only creating new ones
                 // in an event of an 8 way pipe or a shape that only blocks access to walls,
                 // you can put something here to indicate the spot is no longer vacant but has no meaningful blocks.
@@ -137,6 +141,7 @@ public class PipeControllerTest
             });
 
 
+        Debug.Log("Flowing...");
         controller.DoFlows();
 
         // confirm that water has moved into the elbow, but not completely
@@ -144,6 +149,7 @@ public class PipeControllerTest
         Assert.That(grid[1, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
         Assert.That(grid[1, 1, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(0));
 
+        Debug.Log("Flowing...");
         controller.DoFlows();
 
         // confirm that water has moved into the core, but not completely
@@ -151,6 +157,7 @@ public class PipeControllerTest
         Assert.That(grid[1, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
         Assert.That(grid[1, 1, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
 
+        Debug.Log("Flowing...");
         controller.DoFlows();
 
         //Confirm that the water stops moving
@@ -160,12 +167,134 @@ public class PipeControllerTest
 
         //drain the water from the core
         core.RemoveResource(WaterAndFoodResources.water, 3);
+        Debug.Log("Flowing...");
         controller.DoFlows();
 
         // confirm the rest drains into it
         Assert.That(grid[2, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(0));
         Assert.That(grid[1, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(0));
         Assert.That(grid[1, 1, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+
+        //drain the water from the core and spawn more at the place before
+        core.RemoveResource(WaterAndFoodResources.water, 3);
+        grid[2, 2, 1].AddResource(WaterAndFoodResources.water, 2);
+
+
+        Debug.Log("Flowing...");
+        controller.DoFlows();
+
+        // confirm that water has moved into the elbow, but not completely
+        Assert.That(grid[2, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 1, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(0));
+
+        // turn the elbow so it is open to the wall and the core
+        controller.UpdateAdjacencies(
+            new List<PipeController<WaterAndFoodResources>.NodePair>() { },
+            new List<PipeController<WaterAndFoodResources>.NodePair>() {
+                // remove the connection to the corner
+                new PipeController<WaterAndFoodResources>.NodePair(){occupiedNode=grid[1, 2, 1], otherNode= grid[2, 2, 1]}
+            });
+
+        Debug.Log("Flowing...");
+        controller.DoFlows();
+
+        // confirm that water has moved out of the the elbow, but not into it
+        Assert.That(grid[2, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(0));
+        Assert.That(grid[1, 1, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+
+        // pour more water on the spot and turn the elbow to be open to the wet spot and another spot.
+
+        grid[2, 2, 1].AddResource(WaterAndFoodResources.water, 4);
+        controller.UpdateAdjacencies(
+            new List<PipeController<WaterAndFoodResources>.NodePair>() {
+                // opening up new path
+                new PipeController<WaterAndFoodResources>.NodePair(){occupiedNode = grid[1, 2, 1], otherNode= grid[2, 2, 1] },
+                new PipeController<WaterAndFoodResources>.NodePair(){occupiedNode = grid[1, 2, 1], otherNode= grid[1, 2, 2] }
+            },
+            new List<PipeController<WaterAndFoodResources>.NodePair>() {
+                // closing path
+                new PipeController<WaterAndFoodResources>.NodePair(){occupiedNode=grid[1, 2, 1], otherNode= grid[1, 1, 1]}
+            });
+
+        Debug.Log("Flowing...");
+        controller.DoFlows();
+
+        // confirm that the water doesn't move because the elbow isnt connected to anything
+        Assert.That(grid[2, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(5));
+        Assert.That(grid[1, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(0));
+        Assert.That(grid[1, 1, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+
+        // Add two 6-way pipes connecting from the elbow to the core
+
+        controller.UpdateAdjacencies(
+            new List<PipeController<WaterAndFoodResources>.NodePair>() {
+                // creating open pipes located at 1,2,2 and 1,1,2.
+                // Thus: (water 2,2,1)->(elbow 1,2,1)->(6-way 1,2,2)->(6way 1,1,2)->(core 1,1,1) path
+                // any adjacency is valid here, we just need the controller to know these are occupied
+                new PipeController<WaterAndFoodResources>.NodePair(){occupiedNode = grid[1, 2, 2], otherNode= grid[2, 2, 2] },
+                new PipeController<WaterAndFoodResources>.NodePair(){occupiedNode = grid[1, 1, 2], otherNode= grid[1, 1, 1] }
+            },
+            new List<PipeController<WaterAndFoodResources>.NodePair>() {
+                // fully-open pipes, can omit this
+            });
+
+        Debug.Log("Flowing...");
+        controller.DoFlows();
+
+        // confirm that the water flows into this new path
+        Assert.That(grid[2, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(2));
+        Assert.That(grid[1, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(3));
+        Assert.That(grid[1, 2, 2].GetResource(WaterAndFoodResources.water), Is.EqualTo(0));
+        Assert.That(grid[1, 1, 2].GetResource(WaterAndFoodResources.water), Is.EqualTo(0));
+        Assert.That(grid[1, 1, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+
+        Debug.Log("Flowing...");
+        controller.DoFlows();
+
+        Assert.That(grid[2, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(2));
+        Assert.That(grid[1, 2, 2].GetResource(WaterAndFoodResources.water), Is.EqualTo(2));
+        Assert.That(grid[1, 1, 2].GetResource(WaterAndFoodResources.water), Is.EqualTo(0));
+        Assert.That(grid[1, 1, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+
+        Debug.Log("Flowing...");
+        controller.DoFlows();
+
+        Assert.That(grid[2, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 2, 2].GetResource(WaterAndFoodResources.water), Is.EqualTo(2));
+        Assert.That(grid[1, 1, 2].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 1, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+
+        Debug.Log("Flowing...");
+        controller.DoFlows();
+
+        Assert.That(grid[2, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 2, 2].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 1, 2].GetResource(WaterAndFoodResources.water), Is.EqualTo(2));
+        Assert.That(grid[1, 1, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+
+        Debug.Log("Flowing...");
+        controller.DoFlows();
+
+        Assert.That(grid[2, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 2, 2].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 1, 2].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 1, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(2));
+
+        Debug.Log("Flowing...");
+        controller.DoFlows();
+
+        //Confirm that the water ceases to flow any further
+        Assert.That(grid[2, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 2, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 2, 2].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 1, 2].GetResource(WaterAndFoodResources.water), Is.EqualTo(1));
+        Assert.That(grid[1, 1, 1].GetResource(WaterAndFoodResources.water), Is.EqualTo(2));
     }
 
     // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
