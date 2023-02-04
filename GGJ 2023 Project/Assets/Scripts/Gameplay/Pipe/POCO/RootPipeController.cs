@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enum
 {
-    public delegate PipeInfo InfoGetter(int x, int y);
+    public delegate PipeInfo InfoGetter(int x, int y, int z);
 
     private readonly InfoGetter infoGetter;
     private PipeController<ResourceEnum, PipeInfo> pipeController;
@@ -28,7 +28,7 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
             {
                 for (int x = 0; x < xSize; x++)
                 {
-                    grid[z, y, x] = pipeController.CreateNonCore($"[Non core ({x},{y})]", infoGetter(x,y));
+                    grid[z, y, x] = pipeController.CreateNonCore($"[Non core ({x},{y})]", infoGetter(x,y,z));
                 }
             }
         }
@@ -37,7 +37,7 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
     public void AddCore(int x, int y, string name)
     {
         PipeNode<ResourceEnum, PipeInfo> replacedNode = grid[1, y, x];
-        PipeNode<ResourceEnum, PipeInfo> newCore = pipeController.CreateCore(name, infoGetter(x,y));
+        PipeNode<ResourceEnum, PipeInfo> newCore = pipeController.CreateCore(name, infoGetter(x,y,1));
         foreach (var destination in replacedNode.GetBackReferences())
         {
             destination.RemoveAdjacent(replacedNode);
@@ -137,5 +137,20 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
     public void DoFlows()
     {
         pipeController.DoFlows();
+    }
+
+    public void AddResource(int x, int y, int z, ResourceEnum res, int amount)
+    {
+        grid[z, y, x].AddResource(res, amount);
+    }
+
+    public void RemoveResource(int x, int y, int z, ResourceEnum res, int amount)
+    {
+        grid[z, y, x].RemoveResource(res, amount);
+    }
+
+    public int GetResource(int x, int y, int z, ResourceEnum res)
+    {
+        return grid[z, y, x].GetResource(res);
     }
 }
