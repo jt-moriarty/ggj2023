@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -70,7 +70,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -120,12 +120,12 @@ TextureImporter:
       name: boleteAdultHealthy
       rect:
         serializedVersion: 2
-        x: 2
-        y: 430
-        width: 66
-        height: 80
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 384
+        width: 64
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -141,12 +141,12 @@ TextureImporter:
       name: boleteAdultWithered
       rect:
         serializedVersion: 2
-        x: 70
-        y: 430
-        width: 66
-        height: 80
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 64
+        y: 384
+        width: 64
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -162,12 +162,12 @@ TextureImporter:
       name: boleteBabyHealthy
       rect:
         serializedVersion: 2
-        x: 138
-        y: 430
-        width: 66
-        height: 80
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 384
+        width: 64
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -183,12 +183,12 @@ TextureImporter:
       name: boleteBabyWithered
       rect:
         serializedVersion: 2
-        x: 2
-        y: 348
-        width: 66
-        height: 80
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 192
+        y: 384
+        width: 64
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -204,12 +204,12 @@ TextureImporter:
       name: grisetteAdultHealthy
       rect:
         serializedVersion: 2
-        x: 70
-        y: 348
-        width: 66
-        height: 80
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 256
+        width: 64
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -225,12 +225,12 @@ TextureImporter:
       name: grisetteAdultWithered
       rect:
         serializedVersion: 2
-        x: 138
-        y: 348
-        width: 66
-        height: 80
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 64
+        y: 256
+        width: 64
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -246,12 +246,12 @@ TextureImporter:
       name: grisetteBabyHealthy
       rect:
         serializedVersion: 2
-        x: 2
-        y: 266
-        width: 66
-        height: 80
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 256
+        width: 64
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -267,12 +267,12 @@ TextureImporter:
       name: grisetteBabyWithered
       rect:
         serializedVersion: 2
-        x: 70
-        y: 266
-        width: 66
-        height: 80
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 192
+        y: 256
+        width: 64
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -288,12 +288,12 @@ TextureImporter:
       name: inkyAdultHealthy
       rect:
         serializedVersion: 2
-        x: 138
-        y: 266
-        width: 66
-        height: 80
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 0
+        y: 128
+        width: 64
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -309,12 +309,12 @@ TextureImporter:
       name: inkyAdultWithered
       rect:
         serializedVersion: 2
-        x: 2
-        y: 184
-        width: 66
-        height: 80
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 64
+        y: 128
+        width: 64
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -330,12 +330,12 @@ TextureImporter:
       name: inkyBabyHealthy
       rect:
         serializedVersion: 2
-        x: 70
-        y: 184
-        width: 66
-        height: 80
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 128
+        y: 128
+        width: 64
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -351,12 +351,12 @@ TextureImporter:
       name: inkyBabyWithered
       rect:
         serializedVersion: 2
-        x: 138
-        y: 184
-        width: 66
-        height: 80
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 192
+        y: 128
+        width: 64
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.125}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

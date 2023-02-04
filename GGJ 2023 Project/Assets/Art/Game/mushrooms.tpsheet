@@ -4,7 +4,7 @@
 # To import these sprites into your Unity project, download "TexturePackerImporter":
 # https://www.codeandweb.com/texturepacker/unity
 #
-# $TexturePacker:SmartUpdate:d7015670aa8dc7eef3ace173163940c4:c970cea6b966b3d8f2832c5f111ae5a4:14f058cf106df0e57ca6270231a0647e$
+# $TexturePacker:SmartUpdate:1256e5c3ab63c794907bb7f3518bd118:7c912e6b60ffd9023d36ae4a84129e95:14f058cf106df0e57ca6270231a0647e$
 #
 :format=40300
 :texture=mushrooms.png
@@ -12,15 +12,15 @@
 :pivotpoints=enabled
 :borders=disabled
 
-boleteAdultHealthy;2;430;66;80; 0.5;0.5; 0;0;0;0
-boleteAdultWithered;70;430;66;80; 0.5;0.5; 0;0;0;0
-boleteBabyHealthy;138;430;66;80; 0.5;0.5; 0;0;0;0
-boleteBabyWithered;2;348;66;80; 0.5;0.5; 0;0;0;0
-grisetteAdultHealthy;70;348;66;80; 0.5;0.5; 0;0;0;0
-grisetteAdultWithered;138;348;66;80; 0.5;0.5; 0;0;0;0
-grisetteBabyHealthy;2;266;66;80; 0.5;0.5; 0;0;0;0
-grisetteBabyWithered;70;266;66;80; 0.5;0.5; 0;0;0;0
-inkyAdultHealthy;138;266;66;80; 0.5;0.5; 0;0;0;0
-inkyAdultWithered;2;184;66;80; 0.5;0.5; 0;0;0;0
-inkyBabyHealthy;70;184;66;80; 0.5;0.5; 0;0;0;0
-inkyBabyWithered;138;184;66;80; 0.5;0.5; 0;0;0;0
+boleteAdultHealthy;0;384;64;128; 0.5;0.125; 0;0;0;0
+boleteAdultWithered;64;384;64;128; 0.5;0.125; 0;0;0;0
+boleteBabyHealthy;128;384;64;128; 0.5;0.125; 0;0;0;0
+boleteBabyWithered;192;384;64;128; 0.5;0.125; 0;0;0;0
+grisetteAdultHealthy;0;256;64;128; 0.5;0.125; 0;0;0;0
+grisetteAdultWithered;64;256;64;128; 0.5;0.125; 0;0;0;0
+grisetteBabyHealthy;128;256;64;128; 0.5;0.125; 0;0;0;0
+grisetteBabyWithered;192;256;64;128; 0.5;0.125; 0;0;0;0
+inkyAdultHealthy;0;128;64;128; 0.5;0.125; 0;0;0;0
+inkyAdultWithered;64;128;64;128; 0.5;0.125; 0;0;0;0
+inkyBabyHealthy;128;128;64;128; 0.5;0.125; 0;0;0;0
+inkyBabyWithered;192;128;64;128; 0.5;0.125; 0;0;0;0

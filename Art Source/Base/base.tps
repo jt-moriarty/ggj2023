@@ -132,7 +132,7 @@
             <key>datafile</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename></filename>
+                <filename>../../GGJ 2023 Project/Assets/Art/Game/base.tpsheet</filename>
             </struct>
         </map>
         <key>multiPack</key>

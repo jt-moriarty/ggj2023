@@ -4,43 +4,43 @@
 # To import these sprites into your Unity project, download "TexturePackerImporter":
 # https://www.codeandweb.com/texturepacker/unity
 #
-# $TexturePacker:SmartUpdate:2f9c663e6e0d3f4c9f5b69ddbf22c1b5:b09f13c4941c2e462b164934b72d1dea:3a243e67dcef4cff7c33c761010be74f$
+# $TexturePacker:SmartUpdate:b8b2d761a23f3099908d03963feed903:c4cd07bdb8a595d762cbadbea2a82c57:3a243e67dcef4cff7c33c761010be74f$
 #
 :format=40300
 :texture=roots.png
-:size=512x512
+:size=256x512
 :pivotpoints=enabled
 :borders=disabled
 
-rootsI1Healthy;2;430;66;80; 0.5;0.5; 0;0;0;0
-rootsI1Withered;70;430;66;80; 0.5;0.5; 0;0;0;0
-rootsI2Healthy;138;430;66;80; 0.5;0.5; 0;0;0;0
-rootsI2Withered;206;430;66;80; 0.5;0.5; 0;0;0;0
-rootsL1Healthy;274;430;66;80; 0.5;0.5; 0;0;0;0
-rootsL1Withered;342;430;66;80; 0.5;0.5; 0;0;0;0
-rootsL2Healthy;410;430;66;80; 0.5;0.5; 0;0;0;0
-rootsL2Withered;2;348;66;80; 0.5;0.5; 0;0;0;0
-rootsL3Healthy;70;348;66;80; 0.5;0.5; 0;0;0;0
-rootsL3Withered;138;348;66;80; 0.5;0.5; 0;0;0;0
-rootsL4Healthy;206;348;66;80; 0.5;0.5; 0;0;0;0
-rootsL4Withered;274;348;66;80; 0.5;0.5; 0;0;0;0
-rootsOriginHealthy;342;348;66;80; 0.5;0.5; 0;0;0;0
-rootsOriginWithered;410;348;66;80; 0.5;0.5; 0;0;0;0
-rootsT1Healthy;2;266;66;80; 0.5;0.5; 0;0;0;0
-rootsT1Withered;70;266;66;80; 0.5;0.5; 0;0;0;0
-rootsT2Healthy;138;266;66;80; 0.5;0.5; 0;0;0;0
-rootsT2Withered;206;266;66;80; 0.5;0.5; 0;0;0;0
-rootsT3Healthy;274;266;66;80; 0.5;0.5; 0;0;0;0
-rootsT3Withered;342;266;66;80; 0.5;0.5; 0;0;0;0
-rootsT4Healthy;410;266;66;80; 0.5;0.5; 0;0;0;0
-rootsT4Withered;2;184;66;80; 0.5;0.5; 0;0;0;0
-rootsTio1Withered;70;184;66;80; 0.5;0.5; 0;0;0;0
-rootsTip1Healthy;138;184;66;80; 0.5;0.5; 0;0;0;0
-rootsTip2Healthy;206;184;66;80; 0.5;0.5; 0;0;0;0
-rootsTip2Withered;274;184;66;80; 0.5;0.5; 0;0;0;0
-rootsTip3Healthy;342;184;66;80; 0.5;0.5; 0;0;0;0
-rootsTip3Withered;410;184;66;80; 0.5;0.5; 0;0;0;0
-rootsTip4Healthy;2;102;66;80; 0.5;0.5; 0;0;0;0
-rootsTip4Withered;70;102;66;80; 0.5;0.5; 0;0;0;0
-rootsXHealthy;138;102;66;80; 0.5;0.5; 0;0;0;0
-rootsXWithered;206;102;66;80; 0.5;0.5; 0;0;0;0
+rootsI1Healthy;0;448;64;64; 0.5;0.25; 0;0;0;0
+rootsI1Withered;64;448;64;64; 0.5;0.25; 0;0;0;0
+rootsI2Healthy;128;448;64;64; 0.5;0.25; 0;0;0;0
+rootsI2Withered;192;448;64;64; 0.5;0.25; 0;0;0;0
+rootsL1Healthy;0;384;64;64; 0.5;0.25; 0;0;0;0
+rootsL1Withered;64;384;64;64; 0.5;0.25; 0;0;0;0
+rootsL2Healthy;128;384;64;64; 0.5;0.25; 0;0;0;0
+rootsL2Withered;192;384;64;64; 0.5;0.25; 0;0;0;0
+rootsL3Healthy;0;320;64;64; 0.5;0.25; 0;0;0;0
+rootsL3Withered;64;320;64;64; 0.5;0.25; 0;0;0;0
+rootsL4Healthy;128;320;64;64; 0.5;0.25; 0;0;0;0
+rootsL4Withered;192;320;64;64; 0.5;0.25; 0;0;0;0
+rootsOriginHealthy;0;256;64;64; 0.5;0.25; 0;0;0;0
+rootsOriginWithered;64;256;64;64; 0.5;0.25; 0;0;0;0
+rootsT1Healthy;128;256;64;64; 0.5;0.25; 0;0;0;0
+rootsT1Withered;192;256;64;64; 0.5;0.25; 0;0;0;0
+rootsT2Healthy;0;192;64;64; 0.5;0.25; 0;0;0;0
+rootsT2Withered;64;192;64;64; 0.5;0.25; 0;0;0;0
+rootsT3Healthy;128;192;64;64; 0.5;0.25; 0;0;0;0
+rootsT3Withered;192;192;64;64; 0.5;0.25; 0;0;0;0
+rootsT4Healthy;0;128;64;64; 0.5;0.25; 0;0;0;0
+rootsT4Withered;64;128;64;64; 0.5;0.25; 0;0;0;0
+rootsTio1Withered;128;128;64;64; 0.5;0.25; 0;0;0;0
+rootsTip1Healthy;192;128;64;64; 0.5;0.25; 0;0;0;0
+rootsTip2Healthy;0;64;64;64; 0.5;0.25; 0;0;0;0
+rootsTip2Withered;64;64;64;64; 0.5;0.25; 0;0;0;0
+rootsTip3Healthy;128;64;64;64; 0.5;0.25; 0;0;0;0
+rootsTip3Withered;192;64;64;64; 0.5;0.25; 0;0;0;0
+rootsTip4Healthy;0;0;64;64; 0.5;0.25; 0;0;0;0
+rootsTip4Withered;64;0;64;64; 0.5;0.25; 0;0;0;0
+rootsXHealthy;128;0;64;64; 0.5;0.25; 0;0;0;0
+rootsXWithered;192;0;64;64; 0.5;0.25; 0;0;0;0
