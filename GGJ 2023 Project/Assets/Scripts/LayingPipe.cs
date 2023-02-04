@@ -5,9 +5,9 @@ using UnityEngine.Tilemaps;
 
 public class LayingPipe : MonoBehaviour
 {
-    public TileLayer tileLayer;
+    //public TileLayer tileLayer;
     public Tilemap tileMap;
-    public Vector3Int currentTile;
+    //public Vector3Int currentTile;
     public Tile[] pipeTile;
     int BinaryIndex;
 
@@ -21,7 +21,7 @@ public class LayingPipe : MonoBehaviour
     {
     }
 
-    void PipeInspection()
+    void PipeInspection(Vector3Int currentTile)
     {
         BinaryIndex = 0;
         if (tileMap.HasTile(new Vector3Int(currentTile.x + 1,currentTile.y,currentTile.z)))
@@ -41,9 +41,10 @@ public class LayingPipe : MonoBehaviour
             BinaryIndex += 8;
         }
     }
-    public void AddPipe()
+
+    public void AddPipe(Vector3Int currentTile)
     {
-        PipeInspection();
+        PipeInspection(currentTile);
         tileMap.SetTile(currentTile, pipeTile[BinaryIndex]);
     }
 }

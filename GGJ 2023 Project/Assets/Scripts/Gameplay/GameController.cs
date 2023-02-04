@@ -12,6 +12,9 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI energyText;
 
+    [SerializeField]
+    private LayingPipe pipePlacer;
+
     // Nutrients + Water from the soil + sunlight = energy in different amounts.
     public double Energy { get; set; }
     public double startingEnergy = 100;
@@ -46,9 +49,13 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private Transform uiTileGrid;
 
+    [SerializeField]
+    private GameObject energyPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
+        pipePlacer = GetComponent<LayingPipe>();
         int i = 0;
         uiTiles = new List<Image>();
         foreach (Tile tile in rootTiles)
@@ -102,12 +109,13 @@ public class GameController : MonoBehaviour
 
         if (mouse.leftButton.wasPressedThisFrame)
         {
-            Debug.Log("place TILE");
+            //Debug.Log("place TILE");
             Vector3 pos = Camera.main.ScreenToWorldPoint(mouse.position.ReadValue());
-            Debug.Log(pos);
-            Debug.Log(selectedTile);
+            //Debug.Log(pos);
+            //Debug.Log(selectedTile);
             pos.z = 0;
-            rootTilemap.SetTile(rootTilemap.WorldToCell(pos), rootTiles[selectedTile]);
+            pipePlacer.AddPipe(rootTilemap.WorldToCell(pos));
+            //rootTilemap.SetTile(rootTilemap.WorldToCell(pos), rootTiles[selectedTile]);
         }
 
         SetSelectedTile(selectedTile);
