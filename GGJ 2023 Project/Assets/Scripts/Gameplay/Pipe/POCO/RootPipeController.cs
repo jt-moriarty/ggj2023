@@ -5,11 +5,16 @@ using UnityEngine;
 
 public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enum
 {
+    private class GridLocation
+    {
+        public PipeNode<ResourceEnum, PipeInfo> pipe;
+        public bool hasRoot;
+    }
     public delegate PipeInfo InfoGetter(int x, int y, int z);
 
     private readonly InfoGetter infoGetter;
     private PipeController<ResourceEnum, PipeInfo> pipeController;
-    private PipeNode<ResourceEnum, PipeInfo>[,,] grid;
+    private GridLocation[,,] grid;
     private readonly int xSize;
     private readonly int ySize;
 
@@ -18,7 +23,7 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
         pipeController = new PipeController<ResourceEnum, PipeInfo>(maxFlowPerTimestep, flowDelegate);
 
         this.infoGetter = infoGetter;
-        grid = new PipeNode<ResourceEnum, PipeInfo>[3, ySize, xSize];
+        grid = new GridLocation[3, ySize, xSize];
         this.xSize = xSize;
         this.ySize = ySize;
 
@@ -28,7 +33,11 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
             {
                 for (int x = 0; x < xSize; x++)
                 {
-                    grid[z, y, x] = pipeController.CreateNonCore($"[Non core ({x},{y})]", infoGetter(x,y,z));
+                    grid[z, y, x] =
+                        new GridLocation() {
+                            pipe = pipeController.CreateNonCore($"[Non core ({x},{y})]", infoGetter(x, y, z)),
+                            hasRoot = false
+                        };
                 }
             }
         }
@@ -36,101 +45,152 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
 
     public void AddCore(int x, int y, string name)
     {
-        PipeNode<ResourceEnum, PipeInfo> replacedNode = grid[1, y, x];
+        GridLocation replacedNode = grid[1, y, x];
         PipeNode<ResourceEnum, PipeInfo> newCore = pipeController.CreateCore(name, infoGetter(x,y,1));
-        foreach (var destination in replacedNode.GetBackReferences())
+        foreach (var destination in replacedNode.pipe.GetBackReferences())
         {
-            destination.RemoveAdjacent(replacedNode);
+            destination.RemoveAdjacent(replacedNode.pipe);
         }
 
-        newCore.AddAdjacent(grid[0, y, x]);
-        newCore.AddAdjacent(grid[2, y, x]);
+        newCore.AddAdjacent(grid[0, y, x].pipe);
+        newCore.AddAdjacent(grid[2, y, x].pipe);
 
         if (x > 0)
         {
-            newCore.AddAdjacent(grid[1, y, x - 1]);
+            GridLocation neigh = grid[1, y, x - 1];
+            if (neigh.hasRoot)
+            {
+                newCore.AddAdjacent(neigh.pipe);
+            }
         }
-        if (x+1 < xSize)
+        if (x + 1 < xSize)
         {
-            newCore.AddAdjacent(grid[1, y, x + 1]);
+            GridLocation neigh = grid[1, y, x + 1];
+            if (neigh.hasRoot)
+            {
+                newCore.AddAdjacent(neigh.pipe);
+            }
         }
         if (y > 0)
         {
-            newCore.AddAdjacent(grid[1, y-1, x]);
+            GridLocation neigh = grid[1, y - 1, x];
+            if (neigh.hasRoot)
+            {
+                newCore.AddAdjacent(neigh.pipe);
+            }
         }
-        if (y+1 < ySize)
+        if (y + 1 < ySize) 
         {
-            newCore.AddAdjacent(grid[1, y+1, x]);
+            GridLocation neigh = grid[1, y+1, x];
+            if (neigh.hasRoot)
+            {
+                newCore.AddAdjacent(neigh.pipe);
+            }
         }
     }
 
     public void AddRoot(int x, int y)
     {
-        PipeNode<ResourceEnum, PipeInfo> node = grid[1, y, x];
+        GridLocation node = grid[1, y, x];
+        node.hasRoot = true;
 
-        node.AddAdjacent(grid[0, y, x]);
-        node.AddAdjacent(grid[2, y, x]);
+        node.pipe.AddAdjacent(grid[0, y, x].pipe);
+        node.pipe.AddAdjacent(grid[2, y, x].pipe);
 
         if (x > 0)
         {
-            PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y, x - 1];
-            if (!neigh.isCore)
+            GridLocation neigh = grid[1, y, x - 1];
+            if (neigh.pipe.isCore)
             {
-                node.AddAdjacent(neigh);
+                neigh.pipe.AddAdjacent(node.pipe);
+            }
+            else
+            { 
+                node.pipe.AddAdjacent(neigh.pipe);
             }
         }
         if (x + 1 < xSize)
         {
-            PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y, x + 1];
-            if (!neigh.isCore)
+            GridLocation neigh = grid[1, y, x + 1];
+            if (neigh.pipe.isCore)
             {
-                node.AddAdjacent(neigh);
+                neigh.pipe.AddAdjacent(node.pipe);
+            }
+            else
+            {
+                node.pipe.AddAdjacent(neigh.pipe);
             }
         }
         if (y > 0)
         {
-            PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y - 1, x];
-            if (!neigh.isCore)
+            GridLocation neigh = grid[1, y - 1, x];
+            if (neigh.pipe.isCore)
             {
-                node.AddAdjacent(neigh);
+                neigh.pipe.AddAdjacent(node.pipe);
+            }
+            else
+            {
+                node.pipe.AddAdjacent(neigh.pipe);
             }
         }
         if (y + 1 < ySize)
         {
-            PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y + 1, x];
-            if (!neigh.isCore)
+            GridLocation neigh = grid[1, y + 1, x];
+            if (neigh.pipe.isCore)
             {
-                node.AddAdjacent(neigh);
+                neigh.pipe.AddAdjacent(node.pipe);
+            }
+            else
+            {
+                node.pipe.AddAdjacent(neigh.pipe);
             }
         }
     }
 
     public void RemoveRoot(int x, int y)
     {
-        PipeNode<ResourceEnum, PipeInfo> node = grid[1, y, x];
+        GridLocation node = grid[1, y, x];
+        PipeNode<ResourceEnum, PipeInfo> pipe = node.pipe;
+        node.hasRoot = false;
 
-        node.RemoveAdjacent(grid[0, y, x]);
-        node.RemoveAdjacent(grid[2, y, x]);
+        pipe.RemoveAdjacent(grid[0, y, x].pipe);
+        pipe.RemoveAdjacent(grid[2, y, x].pipe);
 
         if (x > 0)
         {
-            PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y, x - 1];
-            node.RemoveAdjacent(neigh);
+            PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y, x - 1].pipe;
+            pipe.RemoveAdjacent(neigh);
+            if (neigh.isCore)
+            {
+                neigh.RemoveAdjacent(pipe);
+            }
         }
         if (x + 1 < xSize)
         {
-            PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y, x + 1];
-            node.RemoveAdjacent(neigh);
+            PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y, x + 1].pipe;
+            pipe.RemoveAdjacent(neigh);
+            if (neigh.isCore)
+            {
+                neigh.RemoveAdjacent(pipe);
+            }
         }
         if (y > 0)
         {
-            PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y - 1, x];
-            node.AddAdjacent(neigh);
+            PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y - 1, x].pipe;
+            pipe.RemoveAdjacent(neigh);
+            if (neigh.isCore)
+            {
+                neigh.RemoveAdjacent(pipe);
+            }
         }
         if (y + 1 < ySize)
         {
-            PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y + 1, x];
-            node.AddAdjacent(neigh);
+            PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y + 1, x].pipe;
+            pipe.RemoveAdjacent(neigh);
+            if (neigh.isCore)
+            {
+                neigh.RemoveAdjacent(pipe);
+            }
         }
     }
 
@@ -141,16 +201,16 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
 
     public void AddResource(int x, int y, int z, ResourceEnum res, int amount)
     {
-        grid[z, y, x].AddResource(res, amount);
+        grid[z, y, x].pipe.AddResource(res, amount);
     }
 
     public void RemoveResource(int x, int y, int z, ResourceEnum res, int amount)
     {
-        grid[z, y, x].RemoveResource(res, amount);
+        grid[z, y, x].pipe.RemoveResource(res, amount);
     }
 
     public int GetResource(int x, int y, int z, ResourceEnum res)
     {
-        return grid[z, y, x].GetResource(res);
+        return grid[z, y, x].pipe.GetResource(res);
     }
 }
