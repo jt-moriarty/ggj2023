@@ -265,11 +265,11 @@ public class PipeControllerTest
 
     // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
     // `yield return null;` to skip a frame.
-    [UnityTest]
-    public IEnumerator PipeControllerTestWithEnumeratorPasses()
-    {
+    //[UnityTest]
+    //public IEnumerator PipeControllerTestWithEnumeratorPasses()
+    //{
         // Use the Assert class to test conditions.
         // Use yield to skip a frame.
-        yield return null;
-    }
+        //yield return null;
+    //}
 }
