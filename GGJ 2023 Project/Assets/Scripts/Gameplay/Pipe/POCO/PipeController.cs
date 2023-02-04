@@ -2,15 +2,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PipeController<ResourceEnum> where ResourceEnum : System.Enum
+public class PipeController<ResourceEnum, PipeInfo> where ResourceEnum : System.Enum
 {
-    ICollection<PipeNode<ResourceEnum>> allPipes = new HashSet<PipeNode<ResourceEnum>>();
-    ICollection<PipeNode<ResourceEnum>> cores = new HashSet<PipeNode<ResourceEnum>>();
+    ICollection<PipeNode<ResourceEnum, PipeInfo>> allPipes = new HashSet<PipeNode<ResourceEnum, PipeInfo>>();
+    ICollection<PipeNode<ResourceEnum, PipeInfo>> cores = new HashSet<PipeNode<ResourceEnum, PipeInfo>>();
 
     int maxFlowPerStep;
     OnFlow flowDelegate;
 
-    public delegate void OnFlow(PipeNode<ResourceEnum> source, PipeNode<ResourceEnum> destination, ResourceEnum resourceType, int amount);
+    public delegate void OnFlow(PipeNode<ResourceEnum, PipeInfo> source, PipeNode<ResourceEnum, PipeInfo> destination,
+        ResourceEnum resourceType, int amount);
 
     public PipeController(int maxFlowPerStep, OnFlow flowDelegate)
     {
@@ -18,36 +19,49 @@ public class PipeController<ResourceEnum> where ResourceEnum : System.Enum
         this.flowDelegate = flowDelegate;
     }
 
-    public PipeNode<ResourceEnum> CreateNonCore(String name)
+    public PipeNode<ResourceEnum, PipeInfo> CreateNonCore(String name, PipeInfo info)
     {
-        var pipe = new PipeNode<ResourceEnum>(name);
+        var pipe = new PipeNode<ResourceEnum, PipeInfo>(false, name, info);
         allPipes.Add(pipe);
 
         return pipe;
     }
 
-    public PipeNode<ResourceEnum> CreateCore(String name)
+    public void RemoveNonCore(PipeNode<ResourceEnum, PipeInfo> pipe)
     {
-        PipeNode<ResourceEnum> core = this.CreateNonCore(name);
+        allPipes.Remove(pipe);
+    }
+
+    public void RemoveCore(PipeNode<ResourceEnum, PipeInfo> core)
+    {
+        allPipes.Remove(core);
+        cores.Remove(core);
+    }
+
+    public PipeNode<ResourceEnum, PipeInfo> CreateCore(String name, PipeInfo info)
+    {
+        var core = new PipeNode<ResourceEnum, PipeInfo>(true, name, info);
+        allPipes.Add(core);
+  
         cores.Add(core);
         return core;
     }
 
-    public void SetAdjacency(PipeNode<ResourceEnum> destination, IEnumerable<PipeNode<ResourceEnum>> sources, bool isAdjacent)
+    public void SetAdjacency(PipeNode<ResourceEnum, PipeInfo> destination, IEnumerable<PipeNode<ResourceEnum, PipeInfo>> sources, bool isAdjacent)
     {
-        ICollection<PipeNode<ResourceEnum>> adjacencies = destination.GetAdjacencies();
+        IEnumerable<PipeNode<ResourceEnum, PipeInfo>> adjacencies = destination.GetAdjacencies();
         if (isAdjacent)
         {
             foreach (var source in sources)
             {
-                adjacencies.Add(source);
+                destination.AddAdjacent(source);
             }
         }
         else
         {
             foreach (var source in sources)
             {
-                adjacencies.Remove(source);
+                destination.RemoveAdjacent(source);
             }
         }
     }
@@ -63,12 +77,12 @@ public class PipeController<ResourceEnum> where ResourceEnum : System.Enum
         {
             core.SetDistance(0);
 
-            var visited = new HashSet<PipeNode<ResourceEnum>>();
+            var visited = new HashSet<PipeNode<ResourceEnum, PipeInfo>>();
 
             // could just check all of queue but this might be faster in very connected situation
-            var enqueued = new HashSet<PipeNode<ResourceEnum>>();
+            var enqueued = new HashSet<PipeNode<ResourceEnum, PipeInfo>>();
 
-            var checkQueue = new Queue<PipeNode<ResourceEnum>>();
+            var checkQueue = new Queue<PipeNode<ResourceEnum, PipeInfo>>();
             checkQueue.Enqueue(core);
             while (checkQueue.Count > 0)
             {
@@ -106,7 +120,7 @@ public class PipeController<ResourceEnum> where ResourceEnum : System.Enum
 
     public class NodePair
     {
-        public PipeNode<ResourceEnum> occupiedNode;
-        public PipeNode<ResourceEnum> otherNode;
+        public PipeNode<ResourceEnum, PipeInfo> occupiedNode;
+        public PipeNode<ResourceEnum, PipeInfo> otherNode;
     }
 }
