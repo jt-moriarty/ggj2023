@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-using PC = PipeController<PipeControllerTest.Res>;
-using PN = PipeNode<PipeControllerTest.Res>;
+using PC = PipeController<PipeControllerTest.Res, string>;
+using PN = PipeNode<PipeControllerTest.Res, string>;
 
 public class PipeControllerTest
 {
@@ -24,7 +24,7 @@ public class PipeControllerTest
         PC.OnFlow flowDelegate)
     {
         controller = new PC(3, flowDelegate);
-        core = controller.CreateCore("core1");
+        core = controller.CreateCore("core1", "foo");
 
         grid = new PN[3, 3, 3];
         int coreX = 1;
@@ -41,7 +41,7 @@ public class PipeControllerTest
                         grid[z, y, x] = core;
                         continue;
                     }
-                    grid[z, y, x] = controller.CreateNonCore($"({z},{y},{x})");
+                    grid[z, y, x] = controller.CreateNonCore($"({z},{y},{x})", "foo");
                 }
             }
         }
