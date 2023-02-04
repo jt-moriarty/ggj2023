@@ -24,7 +24,7 @@ public class PipeControllerTest
         PC.OnFlow flowDelegate)
     {
         controller = new PC(3, flowDelegate);
-        core = controller.GetCore();
+        core = controller.CreateCore("core1");
 
         grid = new PN[3, 3, 3];
         int coreX = 1;
@@ -41,37 +41,18 @@ public class PipeControllerTest
                         grid[z, y, x] = core;
                         continue;
                     }
-
-                    var neighs = new List<PN>();
-                    if (x > 0) neighs.Add(grid[z, y, x - 1]);
-                    if (y > 0) neighs.Add(grid[z, y - 1, x]);
-                    if (z > 0) neighs.Add(grid[z - 1, y, x]);
-                    if (x == coreX && y == coreY)
-                    {
-                        if (z + 1 == coreZ || z - 1 == coreZ)
-                        {
-                            neighs.Add(core);
-                        }
-                    }
-                    if (x == coreX && z == coreZ)
-                    {
-                        if (y + 1 == coreY || y - 1 == coreY)
-                        {
-                            neighs.Add(core);
-                        }
-                    }
-                    if (z == coreZ && y == coreY)
-                    {
-                        if (x + 1 == coreX || x - 1 == coreX)
-                        {
-                            neighs.Add(core);
-                        }
-                    }
-                    grid[z, y, x] = controller.CreateVacancy(neighs, $"({z},{y},{x})");
+                    grid[z, y, x] = controller.CreateNonCore($"({z},{y},{x})");
                 }
             }
         }
-        controller.UpdateAdjacencies();
+
+        List<PN> neighs = new List<PN>
+        {
+            grid[0,1,1], grid[2,1,1],
+            grid[1,0,1], grid[1,2,1],
+            grid[1,1,0], grid[1,1,2]
+        };
+        controller.SetAdjacency(core, neighs, true);
     }
 
     // A Test behaves as an ordinary method
@@ -83,18 +64,10 @@ public class PipeControllerTest
                 Debug.Log($"Moving {amnt} {resType} from {src} to {dst}");
             });
 
-        Assert.That(!grid[0, 0, 0].IsBlockedWith(grid[0, 0, 1]));
-        Assert.That(!grid[1, 1, 1].IsBlockedWith(grid[1, 1, 2]));
-
         Assert.That(grid[1, 1, 1].GetAdjacencies(), Has.Member(grid[1, 1, 2]));
+        Assert.That(grid[1, 1, 2].GetAdjacencies(), Has.None.SameAs(grid[1, 1, 1]));
         Assert.That(grid[1, 1, 1].GetAdjacencies(), Has.None.SameAs(grid[1, 2, 2]));
         Assert.That(grid[0, 0, 0].GetAdjacencies(), Has.None.SameAs(grid[2, 2, 2]));
-
-
-        Assert.That(grid[1, 1, 1].GetDistance(), Is.EqualTo(0));
-        Assert.That(grid[0, 1, 1].GetDistance(), Is.EqualTo(1));
-        Assert.That(grid[0, 0, 1].GetDistance(), Is.EqualTo(2));
-        Assert.That(grid[0, 0, 2].GetDistance(), Is.EqualTo(3));
 
         // food spawns at  z,y,x = 1,1,0
         grid[1, 1, 0].AddResource(Res.food, 5);
@@ -128,21 +101,11 @@ public class PipeControllerTest
 
 
         //Add elbow pipe at 1,2,1 that create path from 2,2,1 to core
-        controller.UpdateAdjacencies(
-            new List<PC.NodePair>()
-            {
-                // we're not removing any existing boundaries here, only creating new ones
-                // in an event of a 6 way pipe or a shape that only blocks access to walls,
-                // you can put something here to indicate the spot is no longer vacant but has no meaningful blocks.
-            },
-            new List<PC.NodePair>() {
-                //an elbow pipe normally blocks 4 out of 6 possible directions.
-                // but 1,2,1 is along a wall so one direction is already not blocked,
-                // so we only put 3 blockings in this list:
-            new PC.NodePair(){occupiedNode=grid[1, 2, 1], otherNode= grid[0, 2, 1]},
-            new PC.NodePair(){occupiedNode=grid[1, 2, 1], otherNode= grid[1, 2, 0]},
-            new PC.NodePair(){occupiedNode=grid[1, 2, 1], otherNode= grid[1, 2, 2]}
-            });
+        List<PN> neighsForElbow = new List<PN> { grid[2, 2, 1] };
+        controller.SetAdjacency(grid[1,2,1],neighsForElbow, true);
+
+        List<PN> neighsForCore = new List<PN> { grid[1, 2, 1] };
+        controller.SetAdjacency(grid[1, 1, 1], neighsForCore, true);
 
 
         Debug.Log("Flowing...");
@@ -193,12 +156,7 @@ public class PipeControllerTest
         Assert.That(grid[1, 1, 1].GetResource(Res.water), Is.EqualTo(0));
 
         // turn the elbow so it is open to the wall and the core
-        controller.UpdateAdjacencies(
-            new List<PC.NodePair>() { },
-            new List<PC.NodePair>() {
-                // remove the connection to the corner
-                new PC.NodePair(){occupiedNode=grid[1, 2, 1], otherNode= grid[2, 2, 1]}
-            });
+        controller.SetAdjacency(grid[1, 2, 1], new List<PN> { grid[2, 2, 1] }, false);
 
         Debug.Log("Flowing...");
         controller.DoFlows();
@@ -211,16 +169,15 @@ public class PipeControllerTest
         // pour more water on the spot and turn the elbow to be open to the wet spot and another spot.
 
         grid[2, 2, 1].AddResource(Res.water, 4);
-        controller.UpdateAdjacencies(
-            new List<PC.NodePair>() {
-                // opening up new path
-                new PC.NodePair(){occupiedNode = grid[1, 2, 1], otherNode= grid[2, 2, 1] },
-                new PC.NodePair(){occupiedNode = grid[1, 2, 1], otherNode= grid[1, 2, 2] }
-            },
-            new List<PC.NodePair>() {
-                // closing path
-                new PC.NodePair(){occupiedNode=grid[1, 2, 1], otherNode= grid[1, 1, 1]}
-            });
+
+        neighsForElbow = new List<PN>
+        {
+            grid[2,2,1],
+            grid[1,2,2]
+        };
+        controller.SetAdjacency(grid[1, 2, 1], neighsForElbow, true);
+
+        controller.SetAdjacency(grid[1, 1, 1], new List<PN> { grid[1, 2, 1] }, false);
 
         Debug.Log("Flowing...");
         controller.DoFlows();
@@ -232,17 +189,22 @@ public class PipeControllerTest
 
         // Add two 6-way pipes connecting from the elbow to the core
 
-        controller.UpdateAdjacencies(
-            new List<PC.NodePair>() {
-                // creating open pipes located at 1,2,2 and 1,1,2.
-                // Thus: (water 2,2,1)->(elbow 1,2,1)->(6-way 1,2,2)->(6way 1,1,2)->(core 1,1,1) path
-                // any adjacency is valid here, we just need the controller to know these are occupied
-                new PC.NodePair(){occupiedNode = grid[1, 2, 2], otherNode= grid[2, 2, 2] },
-                new PC.NodePair(){occupiedNode = grid[1, 1, 2], otherNode= grid[1, 1, 1] }
-            },
-            new List<PC.NodePair>() {
-                // fully-open pipes, can omit this
-            });
+        // creating 6 way pipes located at 1,2,2 and 1,1,2.
+        // Thus: (water 2,2,1)->(elbow 1,2,1)->(6-way 1,2,2)->(6way 1,1,2)->(core 1,1,1) path
+        List<PN> neighsforSixWay = new List<PN>
+        {
+            grid[0,2,2],grid[2,2,2],
+            grid[1,1,2],
+            grid[1,2,1]
+        };
+        controller.SetAdjacency(grid[1, 2, 2], neighsforSixWay, true);
+
+        neighsforSixWay = new List<PN>
+        {
+            grid[0,1,2], grid[2,1,2],
+            grid[1,0,2], grid[1,2,2]
+        };
+        controller.SetAdjacency(grid[1, 1, 2], neighsforSixWay, true);
 
         Debug.Log("Flowing...");
         controller.DoFlows();
