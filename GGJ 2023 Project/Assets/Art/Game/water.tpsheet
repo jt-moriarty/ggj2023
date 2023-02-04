@@ -1,0 +1,25 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# https://www.codeandweb.com/texturepacker/unity
+#
+# $TexturePacker:SmartUpdate:430d593a3fb29535c7a9a1b0a2cc4167:0a6debce1fd8e68eff7e94a301e34d3c:25f5b9541d9df8197cc836b4d63ba09e$
+#
+:format=40300
+:texture=water.png
+:size=256x512
+:pivotpoints=enabled
+:borders=disabled
+
+groundwaterI1;2;430;66;80; 0.5;0.5; 0;0;0;0
+groundwaterI2;70;430;66;80; 0.5;0.5; 0;0;0;0
+groundwaterL1;138;430;66;80; 0.5;0.5; 0;0;0;0
+groundwaterL2;2;348;66;80; 0.5;0.5; 0;0;0;0
+groundwaterL3;70;348;66;80; 0.5;0.5; 0;0;0;0
+groundwaterL4;138;348;66;80; 0.5;0.5; 0;0;0;0
+groundwaterPuddle;2;266;66;80; 0.5;0.5; 0;0;0;0
+groundwaterSmall1;70;266;66;80; 0.5;0.5; 0;0;0;0
+groundwaterSmall2;138;266;66;80; 0.5;0.5; 0;0;0;0
+groundwaterSmall3;2;184;66;80; 0.5;0.5; 0;0;0;0
+groundwaterSmall4;70;184;66;80; 0.5;0.5; 0;0;0;0

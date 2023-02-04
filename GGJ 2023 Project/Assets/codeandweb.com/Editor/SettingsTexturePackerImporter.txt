@@ -1,0 +1,26 @@
+version: 2
+tpsheetFileNames:
+- Assets/Art/Game/base.tpsheet
+- Assets/Art/Game/covers.tpsheet
+- Assets/Art/Game/dirt.tpsheet
+- Assets/Art/Game/mushrooms.tpsheet
+- Assets/Art/Game/roots.tpsheet
+- Assets/Art/Game/water.tpsheet
+- Assets/codeandweb.com/Example/SpriteSheet/sprites.tpsheet
+textureFileNames:
+- Assets/Art/Game/base.png
+- Assets/Art/Game/covers.png
+- Assets/Art/Game/dirt.png
+- Assets/Art/Game/mushrooms.png
+- Assets/Art/Game/roots.png
+- Assets/Art/Game/water.png
+- Assets/codeandweb.com/Example/SpriteSheet/sprites.png
+normalmapFileNames:
+- 
+- 
+- 
+- 
+- 
+- 
+- Assets/codeandweb.com/Example/SpriteSheet/sprites_n.png
+enableDebugOutput: 0
