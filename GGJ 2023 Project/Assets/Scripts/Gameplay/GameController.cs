@@ -75,7 +75,7 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        pipePlacer = GetComponent<LayingPipe>();
+        //pipePlacer = GetComponent<LayingPipe>();
         rootPipeController = new RootPipeController<GameResource, Vector3Int>(rootLayer.gridSizeX, rootLayer.gridSizeY, 3, OnFlow, SaveTileIndex);
         //rootPipeController.AddCore(3, 3, "starting core");
         AddCore(3, 3);
@@ -127,19 +127,6 @@ public class GameController : MonoBehaviour
             SetActiveLayer(--CurrentLayer);
         }
 
-        /*if (keyboard.leftArrowKey.wasPressedThisFrame)
-        {
-            selectedTile--;
-            if (selectedTile < 0)
-                selectedTile = uiTiles.Count - 1;
-        }
-        else if (keyboard.rightArrowKey.wasPressedThisFrame)
-        {
-            selectedTile++;
-            if (selectedTile > uiTiles.Count - 1)
-                selectedTile = 0;
-        }*/
-
         if (mouse.leftButton.wasPressedThisFrame && CurrentLayer == TilemapLayer.Root)
         {
             //Debug.Log("place TILE");
@@ -153,8 +140,7 @@ public class GameController : MonoBehaviour
                 pipePlacer.AddPipe(gridPos);
             //rootTilemap.SetTile(rootTilemap.WorldToCell(pos), rootTiles[selectedTile]);
         }
-
-        if (mouse.rightButton.wasPressedThisFrame)
+        else if (mouse.rightButton.wasPressedThisFrame && CurrentLayer == TilemapLayer.Root)
         {
             Vector3 pos = Camera.main.ScreenToWorldPoint(mouse.position.ReadValue());
             pos.z = 0;
@@ -162,6 +148,9 @@ public class GameController : MonoBehaviour
             Vector3Int idx = rootTilemap.WorldToCell(pos);
 
             Vector3 gridPos = rootTilemap.CellToWorld(idx);
+            Debug.Log($"pos: {pos}, int: {idx}, gridPos: {gridPos}");
+            //gridPos.x -= 0.5f;
+            gridPos.y += 0.25f;
             GameObject.Instantiate(energyPrefab, gridPos, Quaternion.identity);
             rootPipeController.AddResource(idx.x, idx.y, 0, GameResource.energy, 5);
         }
