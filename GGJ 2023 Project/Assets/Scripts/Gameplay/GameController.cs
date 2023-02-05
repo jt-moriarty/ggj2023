@@ -37,6 +37,18 @@ public class GameController : MonoBehaviour
     public TilemapLayer CurrentLayer { get; set; }
 
     [SerializeField]
+    private Tile[] smallHealthyMushrooms;
+
+    [SerializeField]
+    private Tile[] smallUnhealthyMushrooms;
+
+    [SerializeField]
+    private Tile[] healthyMushrooms;
+
+    [SerializeField]
+    private Tile[] unhealthyMushrooms;
+
+    [SerializeField]
     private Tilemap[] surfaceTilemaps;
 
     [SerializeField]
@@ -44,6 +56,9 @@ public class GameController : MonoBehaviour
 
     [SerializeField]
     private Tilemap[] baseTilemaps;
+
+    [SerializeField]
+    private Tilemap mushroomTilemap;
 
     [SerializeField]
     private Tilemap rootTilemap;
@@ -181,11 +196,17 @@ public class GameController : MonoBehaviour
 
     void AddCore(int x, int y)
     {
+        AddMushroom(x + 1, y + 1);
         pipePlacer.AddCore(new Vector3Int(x, y, 0), IsCore);
         x += 3;
         y += 3;
         Debug.Log($"Adding core to ({x},{y})");
         rootPipeController.AddCore(x, y, "starting core");
+    }
+
+    void AddMushroom(int x, int y)
+    {
+        mushroomTilemap.SetTile(new Vector3Int(x, y, 0), smallHealthyMushrooms[Random.Range(0, smallHealthyMushrooms.Length)]);
     }
 
     // Update is called once per frame
@@ -245,6 +266,7 @@ public class GameController : MonoBehaviour
                 {
                     Energy -= coreCost;
                     //TODO: if this was already roots it should cost less.
+                    AddMushroom(gridPos.x + 1, gridPos.y + 1);
                     pipePlacer.AddCore(gridPos, IsCore);
                     Debug.Log($"Adding core to ({logicalPos.x}, {logicalPos.y})");
                     rootPipeController.AddCore(logicalPos.x, logicalPos.y, "new core");
