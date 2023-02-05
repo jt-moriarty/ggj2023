@@ -47,6 +47,7 @@ public class PipeNode<ResourceEnum, PipeInfo> where ResourceEnum : System.Enum
 
         this.isCore = isCore;
         this.name = name;
+        this.Info = info;
     }
 
     public void MoveResource(PipeNode<ResourceEnum, PipeInfo> destination, ResourceEnum resource, int amount)

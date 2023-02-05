@@ -87,6 +87,14 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
                 newCore.AddAdjacent(neigh.pipe);
             }
         }
+
+        foreach (ResourceEnum resourceType in System.Enum.GetValues(typeof(ResourceEnum)))
+        {
+            int amnt = replacedNode.pipe.GetResource(resourceType);
+            newCore.AddResource(resourceType, amnt);
+        }
+
+        grid[1, y, x].pipe = newCore;
     }
 
     public void AddRoot(int x, int y)
