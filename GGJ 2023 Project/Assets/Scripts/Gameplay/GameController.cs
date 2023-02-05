@@ -94,7 +94,7 @@ public class GameController : MonoBehaviour
             i++;
         }
 
-        SetSelectedTile(selectedTile);
+        //SetSelectedTile(selectedTile);
 
 
         StartGame();
@@ -177,7 +177,7 @@ public class GameController : MonoBehaviour
 
         //TODO: right click to place new mushroom + core on the root layer.
 
-        SetSelectedTile(selectedTile);
+        //SetSelectedTile(selectedTile);
 
         Energy -= energyDecay * Time.deltaTime;
 
@@ -186,18 +186,6 @@ public class GameController : MonoBehaviour
             // Game over
             // TODO: more elaborate sequence or animation, for now just scene change.
             SceneManager.LoadScene("GameOverScene");
-        }
-    }
-
-    void SetSelectedTile (int newIndex)
-    {
-        int i = 0;
-        foreach (Image uiImage in uiTiles)
-        {
-            Color tileColor = uiImage.color;
-            tileColor.a = i == newIndex ? 1.0f : 0.5f;
-            uiImage.color = tileColor;
-            i++;
         }
     }
 
