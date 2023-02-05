@@ -937,7 +937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   energyText: {fileID: 984184619}
-  pipePlacer: {fileID: 0}
+  pipePlacer: {fileID: 830477143}
   startingEnergy: 100
   energyDecay: 0.1
   startingLayer: 1
