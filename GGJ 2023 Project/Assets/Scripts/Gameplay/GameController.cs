@@ -83,34 +83,33 @@ public class GameController : MonoBehaviour
 
         GameObject resToMove = rootPipeController.GetResourceObj(sourceX, sourceY, sourceZ, res);
         Vector3 startPos = resToMove.transform.position;
-        Vector3 endPos = rootTilemap.CellToWorld((Vector3Int)destNode.Info - new Vector3Int(3, 3, 0)) + Vector3.up * 0.25f;
+        Vector3 endPos = rootTilemap.CellToWorld((Vector3Int)destNode.Info - new Vector3Int(3, 3, 0));
         if (sourceNode.GetResource(res) > 0)
         {
             resToMove = GameObject.Instantiate(energyPrefab, startPos, Quaternion.identity);
         }
         else 
         {
-            rootPipeController.SetResourceObj(sourceX, sourceY, sourceZ, res, resToMove);
+            rootPipeController.SetResourceObj(sourceX, sourceY, sourceZ, res, null);
         }
 
-        bool destroyOnArrival = rootPipeController.GetResource(destX, destY, destZ, res) > amount;
-        if (!destroyOnArrival)
+        StartCoroutine(resToMove.GetComponent<TweenToTarget>().TweenPosition(startPos, endPos, 1f, () =>
         {
-            rootPipeController.SetResourceObj(destX, destY, destZ, res, resToMove);
-        }
+            if (destNode.Info == new Vector3Int(6, 6, 1))
+            {
+                GainEnergy();
+            }
 
-        StartCoroutine(resToMove.GetComponent<TweenToTarget>().TweenPosition(startPos, endPos, 1f, () => 
-        {
-            if (destroyOnArrival)
+            if (rootPipeController.GetResourceObj(destX, destY, destZ, res) != null
+            || destNode.GetResource(res) == 0)
             {
                 GameObject.DestroyImmediate(resToMove);
+            } 
+            else
+            {
+                rootPipeController.SetResourceObj(destX, destY, destZ, res, resToMove);
             }
         }));
-
-        if (destNode.Info == new Vector3Int(6,6,1))
-        {
-            GainEnergy();
-        }
     }
 
     // Start is called before the first frame update
@@ -289,6 +288,12 @@ public class GameController : MonoBehaviour
         int gain = rootPipeController.RemoveResource(6, 6, 1, GameResource.energy, 5);
         Debug.Log($"Gained {gain} energy");
         Energy += gain;
+
+        if (rootPipeController.GetResource(6,6,1,GameResource.energy) == 0)
+        {
+            GameObject obj = rootPipeController.GetResourceObj(6, 6, 1, GameResource.energy);
+            rootPipeController.SetResourceObj(6, 6, 1, GameResource.energy, null);
+        }
     }
 
     void SetActiveLayer (TilemapLayer newLayer)
