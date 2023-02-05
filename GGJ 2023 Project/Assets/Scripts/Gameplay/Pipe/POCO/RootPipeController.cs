@@ -268,7 +268,7 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
         {
             for (int x = 0; x < xSize; x++)
             {
-                grid[z, y, x].stepsAtZero++;
+                grid[1, y, x].stepsAtZero++;
             }
         }
 
