@@ -33,6 +33,8 @@ public class RootPipeControllerTest
 
         controller.AddCore(2, 2, "cool starting core");
 
-        controller.AddResource(2, 1, 1, Res.water, 5);
+        controller.AddResource(2, 2, 1, Res.water, 5);
+
+        Assert.That(controller.RemoveResource(2, 2, 1, Res.water, 5), Is.EqualTo(5));
     }
 }

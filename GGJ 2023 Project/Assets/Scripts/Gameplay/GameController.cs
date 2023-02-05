@@ -104,6 +104,9 @@ public class GameController : MonoBehaviour
     {
 
         pipePlacer.AddCore(new Vector3Int(x,y,0));
+        x += 3;
+        y += 3;
+        Debug.Log($"Adding core to ({x},{y})");
         rootPipeController.AddCore(x, y, "starting core");
 
     }
@@ -137,7 +140,12 @@ public class GameController : MonoBehaviour
             Vector3Int gridPos = rootTilemap.WorldToCell(pos);
 
             if (rootLayer.InGridBounds(gridPos))
+            {
                 pipePlacer.AddPipe(gridPos);
+                gridPos += new Vector3Int(3, 3, 0);
+                Debug.Log($"Adding root to ({gridPos.x}, {gridPos.y})");
+                rootPipeController.AddRoot(gridPos.x,gridPos.y);
+            }
             //rootTilemap.SetTile(rootTilemap.WorldToCell(pos), rootTiles[selectedTile]);
         }
         else if (mouse.rightButton.wasPressedThisFrame && CurrentLayer == TilemapLayer.Root)
@@ -152,13 +160,19 @@ public class GameController : MonoBehaviour
             //gridPos.x -= 0.5f;
             gridPos.y += 0.25f;
             GameObject.Instantiate(energyPrefab, gridPos, Quaternion.identity);
-            rootPipeController.AddResource(idx.x, idx.y, 0, GameResource.energy, 5);
+
+            idx += new Vector3Int(3, 3, 0);
+            Debug.Log($"Adding energy to ({idx.x},{idx.y},1)");
+            rootPipeController.AddResource(idx.x, idx.y, 1, GameResource.energy, 5);
         }
 
         if (keyboard.spaceKey.wasPressedThisFrame)
         {
+            Debug.Log($"performing flow");
             rootPipeController.DoFlows();
-            Energy += rootPipeController.RemoveResource(3, 3, 0, GameResource.energy, 5);
+            int gain = rootPipeController.RemoveResource(6, 6, 1, GameResource.energy, 5);
+            Debug.Log($"Gained {gain} energy");
+            Energy += gain;
         }
 
         //TODO: right click to place new mushroom + core on the root layer.
