@@ -157,7 +157,12 @@ public class GameController : MonoBehaviour
         if (mouse.rightButton.wasPressedThisFrame)
         {
             Vector3 pos = Camera.main.ScreenToWorldPoint(mouse.position.ReadValue());
+            pos.z = 0;
+            
             Vector3Int idx = rootTilemap.WorldToCell(pos);
+
+            Vector3 gridPos = rootTilemap.CellToWorld(idx);
+            GameObject.Instantiate(energyPrefab, gridPos, Quaternion.identity);
             rootPipeController.AddResource(idx.x, idx.y, 0, GameResource.energy, 5);
         }
 
