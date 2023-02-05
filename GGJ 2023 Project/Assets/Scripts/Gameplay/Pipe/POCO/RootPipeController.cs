@@ -46,9 +46,16 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
 
     public void AddCore(int x, int y, string name)
     {
+        if (IsCore(x, y))
+        {
+            Debug.LogError("core already exists at the specified location. Aborting. Hopefully this mistake didn't cost anything!");
+            return;
+        }
+
         GridLocation replacedNode = grid[1, y, x];
         PipeNode<ResourceEnum, PipeInfo> newCore = pipeController.CreateCore(name, infoGetter(x,y,1));
-        foreach (var destination in replacedNode.pipe.GetBackReferences())
+
+        foreach (var destination in replacedNode.pipe.GetBackReferencesCopy())
         {
             destination.RemoveAdjacent(replacedNode.pipe);
         }
@@ -100,6 +107,12 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
 
     public void AddRoot(int x, int y)
     {
+        if (IsOccupied(x, y))
+        {
+            Debug.LogError("Root or core already exists at the specified location. Aborting. Hopefully this mistake didn't cost anything!");
+            return;
+        }
+
         GridLocation node = grid[1, y, x];
         node.hasRoot = true;
 
