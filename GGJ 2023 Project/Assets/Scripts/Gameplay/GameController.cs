@@ -27,6 +27,9 @@ public class GameController : MonoBehaviour
     public double startingEnergy = 100;
     public double energyDecay = 0.1;
 
+    public double coreCost = 10;
+    public double rootCost = 5;
+
     public enum TilemapLayer { Surface = 2, Root = 1, Base = 0 }
 
     public TilemapLayer startingLayer = TilemapLayer.Surface;
@@ -121,7 +124,7 @@ public class GameController : MonoBehaviour
         //rootPipeController.AddCore(3, 3, "starting core");
         AddCore(3, 3);
 
-        int i = 0;
+        /*int i = 0;
         uiTiles = new List<Image>();
         foreach (Tile tile in rootTiles)
         {
@@ -133,7 +136,7 @@ public class GameController : MonoBehaviour
             uiImage.sprite = tile.sprite;
             uiTiles.Add(uiImage);
             i++;
-        }
+        }*/
 
         //SetSelectedTile(selectedTile);
 
@@ -218,6 +221,7 @@ public class GameController : MonoBehaviour
                 Vector3Int logicalPos = gridPos + new Vector3Int(3, 3, 0);
                 if (!rootPipeController.IsOccupied(logicalPos.x, logicalPos.y))
                 {
+                    Energy -= rootCost;
                     pipePlacer.AddPipe(gridPos, IsCore);
                     Debug.Log($"Adding root to ({logicalPos.x}, {logicalPos.y})");
                     rootPipeController.AddRoot(logicalPos.x, logicalPos.y);
@@ -239,6 +243,8 @@ public class GameController : MonoBehaviour
                 Vector3Int logicalPos = gridPos + new Vector3Int(3, 3, 0);
                 if (!rootPipeController.IsCore(logicalPos.x, logicalPos.y))
                 {
+                    Energy -= coreCost;
+                    //TODO: if this was already roots it should cost less.
                     pipePlacer.AddCore(gridPos, IsCore);
                     Debug.Log($"Adding core to ({logicalPos.x}, {logicalPos.y})");
                     rootPipeController.AddCore(logicalPos.x, logicalPos.y, "new core");
