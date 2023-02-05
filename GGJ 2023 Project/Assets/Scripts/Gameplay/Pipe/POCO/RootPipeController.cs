@@ -8,6 +8,7 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
     private class GridLocation
     {
         public PipeNode<ResourceEnum, PipeInfo> pipe;
+        public Dictionary<ResourceEnum, GameObject> resObj = new Dictionary<ResourceEnum, GameObject>();
         public bool hasRoot;
     }
     public delegate PipeInfo InfoGetter(int x, int y, int z);
@@ -225,5 +226,15 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
     public int GetResource(int x, int y, int z, ResourceEnum res)
     {
         return grid[z, y, x].pipe.GetResource(res);
+    }
+
+    public GameObject GetResourceObj(int x, int y, int z, ResourceEnum res)
+    {
+        return grid[z, y, x].resObj.GetValueOrDefault(res,null);
+    }
+
+    public void SetResourceObj(int x, int y, int z, ResourceEnum res, GameObject obj)
+    {
+        grid[z, y, x].resObj[res] = obj;
     }
 }
