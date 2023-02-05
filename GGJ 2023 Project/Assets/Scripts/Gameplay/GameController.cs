@@ -108,23 +108,9 @@ public class GameController : MonoBehaviour
         Vector3Int mapPosSource = sourceNode.Info - new Vector3Int(3, 3, 1);
         Vector3Int mapPosDest = destNode.Info - new Vector3Int(3, 3, 1);
 
-        if (IsCore(mapPosSource.x, mapPosSource.y))
-        {
-            pipePlacer.AddCore(mapPosSource, GetHealth, IsCore);
-        }
-        else
-        {
-            pipePlacer.AddPipe(mapPosSource, GetHealth, IsCore);
-        }
+        pipePlacer.AddNode(mapPosSource, GetHealth, IsCore);
 
-        if (IsCore(mapPosDest.y, mapPosDest.y))
-        {
-            pipePlacer.AddCore(mapPosDest, GetHealth, IsCore);
-        }
-        else
-        {
-            pipePlacer.AddPipe(mapPosDest, GetHealth, IsCore);
-        }
+        pipePlacer.AddNode(mapPosDest, GetHealth, IsCore);
 
         Vector3 startPos = rootTilemap.CellToWorld(mapPosSource) + Vector3.up*0.25f;
         Vector3 endPos = rootTilemap.CellToWorld(mapPosDest) + Vector3.up * 0.25f;
@@ -230,7 +216,7 @@ public class GameController : MonoBehaviour
         rootPipeController.AddCore(logicalX, logicalY, "starting core");
 
         AddMushroom(x + 1, y + 1);
-        pipePlacer.AddCore(new Vector3Int(x, y, 0), GetHealth, IsCore);
+        pipePlacer.AddNode(new Vector3Int(x, y, 0), GetHealth, IsCore);
     }
 
     void AddMushroom(int x, int y)
@@ -276,7 +262,7 @@ public class GameController : MonoBehaviour
                     Debug.Log($"Adding root to ({logicalPos.x}, {logicalPos.y})");
                     rootPipeController.AddRoot(logicalPos.x, logicalPos.y);
                     
-                    pipePlacer.AddPipe(gridPos, GetHealth, IsCore);
+                    pipePlacer.AddNode(gridPos, GetHealth, IsCore);
                 }
             }
             //rootTilemap.SetTile(rootTilemap.WorldToCell(pos), rootTiles[selectedTile]);
@@ -299,7 +285,7 @@ public class GameController : MonoBehaviour
                     Debug.Log($"Adding core to ({logicalPos.x}, {logicalPos.y})");
                     rootPipeController.AddCore(logicalPos.x, logicalPos.y, "new core");
 
-                    pipePlacer.AddCore(gridPos, GetHealth, IsCore);
+                    pipePlacer.AddNode(gridPos, GetHealth, IsCore);
                 }
             }
         }
@@ -404,11 +390,11 @@ public class GameController : MonoBehaviour
         {
             if (rootPipeController.IsCore(node.x, node.y))
             {
-                pipePlacer.AddCore(new Vector3Int(node.x - 3, node.y - 3, 0), GetHealth, IsCore);
+                pipePlacer.AddNode(new Vector3Int(node.x - 3, node.y - 3, 0), GetHealth, IsCore);
             }
             else
             {
-                pipePlacer.AddPipe(new Vector3Int(node.x - 3, node.y - 3, 0), GetHealth, IsCore);
+                pipePlacer.AddNode(new Vector3Int(node.x - 3, node.y - 3, 0), GetHealth, IsCore);
             }
         }
     }

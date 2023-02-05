@@ -45,9 +45,10 @@ public class LayingPipe : MonoBehaviour
     {
     }
 
-    void PipeInspection(Vector3Int currentTile, bool isCore, GetHealth getHealthFunc, IsCore isCoreFunc, bool recur)
+    void PipeInspection(Vector3Int currentTile, GetHealth getHealthFunc, IsCore isCoreFunc, bool recur)
     {
-        List<(Vector3Int,bool)> placesToGo = new List<(Vector3Int,bool)>();
+        bool isCore = isCoreFunc(currentTile.x,currentTile.y);
+        List<Vector3Int> placesToGo = new List<Vector3Int>();
         HealthState health = getHealthFunc(currentTile.x, currentTile.y);
 
         int BinaryIndex = 0;
@@ -55,7 +56,7 @@ public class LayingPipe : MonoBehaviour
         {
             BinaryIndex++;
             Vector3Int pos = new Vector3Int(currentTile.x + 1, currentTile.y, currentTile.z);
-            placesToGo.Add((pos,isCoreFunc(pos.x, pos.y)));
+            placesToGo.Add(pos);
             //placesToGo[count] = new Vector3Int(currentTile.x + 1, currentTile.y, currentTile.z);
             //count++;
         }
@@ -63,7 +64,7 @@ public class LayingPipe : MonoBehaviour
         {
             BinaryIndex += 2;
             Vector3Int pos = new Vector3Int(currentTile.x, currentTile.y + 1, currentTile.z);
-            placesToGo.Add((pos, isCoreFunc(pos.x, pos.y)));
+            placesToGo.Add(pos);
             //placesToGo[count] = new Vector3Int(currentTile.x, currentTile.y + 1, currentTile.z);
             //count++;
         }
@@ -71,7 +72,7 @@ public class LayingPipe : MonoBehaviour
         {
             BinaryIndex += 4;
             Vector3Int pos = new Vector3Int(currentTile.x - 1, currentTile.y, currentTile.z);
-            placesToGo.Add((pos, isCoreFunc(pos.x, pos.y)));
+            placesToGo.Add(pos);
             //placesToGo[count] = new Vector3Int(currentTile.x - 1, currentTile.y, currentTile.z);
             //count++;
         }
@@ -79,7 +80,7 @@ public class LayingPipe : MonoBehaviour
         {
             BinaryIndex += 8;
             Vector3Int pos = new Vector3Int(currentTile.x, currentTile.y - 1, currentTile.z);
-            placesToGo.Add((pos, isCoreFunc(pos.x, pos.y)));
+            placesToGo.Add(pos);
             //placesToGo[count] = new Vector3Int(currentTile.x, currentTile.y - 1, currentTile.z);
             //count++;
         }
@@ -107,27 +108,19 @@ public class LayingPipe : MonoBehaviour
             return;
         }
 
-        foreach ((Vector3Int,bool) nextTilePos in placesToGo)
+        foreach (var nextTilePos in placesToGo)
         {
-            PipeInspection(nextTilePos.Item1, nextTilePos.Item2, getHealthFunc, isCoreFunc, false);
+            PipeInspection(nextTilePos, getHealthFunc, isCoreFunc, false);
         }
     }
-
-    public void AddPipe(Vector3Int currentTile, GetHealth getHealthFunc, IsCore isCoreFunc)
-    {
-        PipeInspection(currentTile, false, getHealthFunc, isCoreFunc, true);
-        //tileMap.SetTile(currentTile, pipeTile[BinaryIndex]);
-    }
     
-    public void AddCore(Vector3Int currentTile, GetHealth getHealthFunc, IsCore isCoreFunc)
+    public void AddNode(Vector3Int currentTile, GetHealth getHealthFunc, IsCore isCoreFunc)
     {
-        //TODO: add from selection of core sprites.
-        PipeInspection(currentTile, true, getHealthFunc, isCoreFunc, true);
-       // tileMap.SetTile(currentTile, pipeTile[BinaryIndex]);
+        PipeInspection(currentTile, getHealthFunc, isCoreFunc, true);
     }
 
     public void RemoveNode(Vector3Int currentTile, GetHealth getHealthFunc, IsCore isCoreFunc)
     {
-        PipeInspection(currentTile, false, getHealthFunc, isCoreFunc, true);
+        PipeInspection(currentTile, getHealthFunc, isCoreFunc, true);
     }
 }
