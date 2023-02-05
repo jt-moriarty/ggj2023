@@ -39,4 +39,10 @@ public class TileLayer : MonoBehaviour
             }
         }
     }
+
+    public bool InGridBounds(Vector3Int gridPos)
+    {
+        //TODO: have this check playable area bounds for the layer.
+        return true;
+    }
 }
