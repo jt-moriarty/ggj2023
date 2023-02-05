@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - UI
   layers:
   - Default
   - TransparentFX
@@ -38,14 +39,14 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Surface
-    uniqueID: 532177939
+  - name: Base
+    uniqueID: 478704591
     locked: 0
   - name: Root
     uniqueID: 2159646551
     locked: 0
-  - name: Base
-    uniqueID: 478704591
+  - name: Surface
+    uniqueID: 532177939
     locked: 0
   - name: Default
     uniqueID: 0

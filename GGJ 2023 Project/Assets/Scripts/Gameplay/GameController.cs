@@ -28,11 +28,26 @@ public class GameController : MonoBehaviour
     public double startingEnergy = 100;
     public double energyDecay = 0.1;
 
+    public double coreCost = 10;
+    public double rootCost = 5;
+
     public enum TilemapLayer { Surface = 2, Root = 1, Base = 0 }
 
     public TilemapLayer startingLayer = TilemapLayer.Surface;
 
     public TilemapLayer CurrentLayer { get; set; }
+
+    [SerializeField]
+    private Tile[] smallHealthyMushrooms;
+
+    [SerializeField]
+    private Tile[] smallUnhealthyMushrooms;
+
+    [SerializeField]
+    private Tile[] healthyMushrooms;
+
+    [SerializeField]
+    private Tile[] unhealthyMushrooms;
 
     [SerializeField]
     private Tilemap[] surfaceTilemaps;
@@ -44,21 +59,24 @@ public class GameController : MonoBehaviour
     private Tilemap[] baseTilemaps;
 
     [SerializeField]
+    private Tilemap mushroomTilemap;
+
+    [SerializeField]
     private Tilemap rootTilemap;
 
     [SerializeField]
     private TileLayer rootLayer;
 
-    [SerializeField]
-    private Tile[] rootTiles;
+    //[SerializeField]
+    //private Tile[] rootTiles;
     
     private List<Image> uiTiles;
 
     [SerializeField]
     private int selectedTile = 0;
 
-    [SerializeField]
-    private Transform uiTileGrid;
+    //[SerializeField]
+    //private Transform uiTileGrid;
 
     [SerializeField]
     private GameObject energyPrefab;
@@ -149,7 +167,7 @@ public class GameController : MonoBehaviour
         //rootPipeController.AddCore(3, 3, "starting core");
         AddCore(3, 3);
 
-        int i = 0;
+        /*int i = 0;
         uiTiles = new List<Image>();
         foreach (Tile tile in rootTiles)
         {
@@ -161,7 +179,7 @@ public class GameController : MonoBehaviour
             uiImage.sprite = tile.sprite;
             uiTiles.Add(uiImage);
             i++;
-        }
+        }*/
 
         //SetSelectedTile(selectedTile);
 
@@ -211,7 +229,13 @@ public class GameController : MonoBehaviour
         Debug.Log($"Adding core to ({logicalX},{logicalY})");
         rootPipeController.AddCore(logicalX, logicalY, "starting core");
 
+        AddMushroom(x + 1, y + 1);
         pipePlacer.AddCore(new Vector3Int(x, y, 0), GetHealth, IsCore);
+    }
+
+    void AddMushroom(int x, int y)
+    {
+        mushroomTilemap.SetTile(new Vector3Int(x, y, 0), smallHealthyMushrooms[Random.Range(0, smallHealthyMushrooms.Length)]);
     }
 
     // Update is called once per frame
@@ -247,9 +271,11 @@ public class GameController : MonoBehaviour
                 Vector3Int logicalPos = gridPos + new Vector3Int(3, 3, 0);
                 if (!rootPipeController.IsOccupied(logicalPos.x, logicalPos.y))
                 {
+                    Energy -= rootCost;
+
                     Debug.Log($"Adding root to ({logicalPos.x}, {logicalPos.y})");
                     rootPipeController.AddRoot(logicalPos.x, logicalPos.y);
-
+                    
                     pipePlacer.AddPipe(gridPos, GetHealth, IsCore);
                 }
             }
@@ -269,9 +295,11 @@ public class GameController : MonoBehaviour
                 Vector3Int logicalPos = gridPos + new Vector3Int(3, 3, 0);
                 if (!rootPipeController.IsCore(logicalPos.x, logicalPos.y))
                 {
-                    pipePlacer.AddCore(gridPos, GetHealth, IsCore);
+                    Energy -= coreCost; 
                     Debug.Log($"Adding core to ({logicalPos.x}, {logicalPos.y})");
                     rootPipeController.AddCore(logicalPos.x, logicalPos.y, "new core");
+
+                    pipePlacer.AddCore(gridPos, GetHealth, IsCore);
                 }
             }
         }
@@ -282,7 +310,7 @@ public class GameController : MonoBehaviour
 
         Energy -= energyDecay * Time.deltaTime;
 
-        energyText.text = $"Energy: {Energy.ToString(".02")}";
+        energyText.text = $"{((int)Energy).ToString()}";
         if (Energy <= 0) {
             EndGame();
         }
