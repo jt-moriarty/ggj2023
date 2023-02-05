@@ -68,51 +68,51 @@ public class PipeController<ResourceEnum, PipeInfo> where ResourceEnum : System.
 
     public void DoFlows()
     {
-        foreach (var node in allPipes) 
+        foreach (var node in allPipes)
         {
             node.SetDistance(-1);
         }
 
+        var visited = new HashSet<PipeNode<ResourceEnum, PipeInfo>>();
+
+        // could just check all of queue but this might be faster in very connected situation
+        var enqueued = new HashSet<PipeNode<ResourceEnum, PipeInfo>>();
+
+        var checkQueue = new Queue<PipeNode<ResourceEnum, PipeInfo>>();
         foreach (var core in cores)
         {
-            core.SetDistance(0);
-
-            var visited = new HashSet<PipeNode<ResourceEnum, PipeInfo>>();
-
-            // could just check all of queue but this might be faster in very connected situation
-            var enqueued = new HashSet<PipeNode<ResourceEnum, PipeInfo>>();
-
-            var checkQueue = new Queue<PipeNode<ResourceEnum, PipeInfo>>();
             checkQueue.Enqueue(core);
-            while (checkQueue.Count > 0)
+            core.SetDistance(0);
+        }
+        while (checkQueue.Count > 0)
+        {
+            var currentPipe = checkQueue.Dequeue();
+            visited.Add(currentPipe);
+
+            foreach (var adj in currentPipe.GetAdjacencies())
             {
-                var currentPipe = checkQueue.Dequeue();
-                visited.Add(currentPipe);
-
-                foreach (var adj in currentPipe.GetAdjacencies())
+                //dont absorb from a tile that has already done an absorption
+                if (visited.Contains(adj))
                 {
-                    //dont absorb from a tile that has already done an absorption
-                    if (visited.Contains(adj))
+                    continue;
+                }
+
+                foreach (ResourceEnum resourceType in System.Enum.GetValues(typeof(ResourceEnum)))
+                {
+                    int availableFlow = currentPipe.GetAvailableFlowAmount(adj, resourceType);
+                    if (availableFlow > 0)
                     {
-                        continue;
-                    }
+                        int amount = Mathf.Min(availableFlow, maxFlowPerStep);
 
-                    foreach (ResourceEnum resourceType in System.Enum.GetValues(typeof(ResourceEnum)))
-                    {
-                        int availableFlow = currentPipe.GetAvailableFlowAmount(adj, resourceType);
-                        if (availableFlow > 0)
-                        {
-                            int amount = Mathf.Min(availableFlow, maxFlowPerStep);
-
-                            adj.MoveResource(currentPipe, resourceType, amount);
-                            flowDelegate(adj, currentPipe, resourceType, amount);
-                        }
+                        adj.MoveResource(currentPipe, resourceType, amount);
+                        flowDelegate(adj, currentPipe, resourceType, amount);
                     }
+                }
 
-                    if (!enqueued.Contains(adj)) {
-                        checkQueue.Enqueue(adj);
-                        enqueued.Add(adj);
-                    }
+                if (!enqueued.Contains(adj))
+                {
+                    checkQueue.Enqueue(adj);
+                    enqueued.Add(adj);
                 }
             }
         }

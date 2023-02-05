@@ -5,12 +5,15 @@ using UnityEngine;
 
 public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enum
 {
+
     private class GridLocation
     {
         public PipeNode<ResourceEnum, PipeInfo> pipe;
         public Dictionary<ResourceEnum, GameObject> resObj = new Dictionary<ResourceEnum, GameObject>();
         public bool hasRoot;
+        public int stepsAtZero;
     }
+    private Dictionary<PipeNode<ResourceEnum, PipeInfo>, GridLocation> backRefs = new Dictionary<PipeNode<ResourceEnum, PipeInfo>, GridLocation>();
     public delegate PipeInfo InfoGetter(int x, int y, int z);
 
     private readonly InfoGetter infoGetter;
@@ -18,12 +21,27 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
     private GridLocation[,,] grid;
     private readonly int xSize;
     private readonly int ySize;
+    PipeController<ResourceEnum, PipeInfo>.OnFlow flowDelegate;
 
-    public RootPipeController(int xSize, int ySize, int maxFlowPerTimestep, PipeController<ResourceEnum, PipeInfo>.OnFlow flowDelegate, InfoGetter infoGetter)
+    private readonly int weakStepCount;
+    private readonly int fatalStepCount;
+
+
+    private HashSet<PipeInfo> newlyDeadNodes = new HashSet<PipeInfo>();
+    private HashSet<PipeInfo> newlyWeakenedNodes = new HashSet<PipeInfo>();
+
+    public RootPipeController(int xSize, int ySize, int maxFlowPerTimestep,
+        int weakStepCount, int fatalStepCount,
+        PipeController<ResourceEnum, PipeInfo>.OnFlow flowDelegate, InfoGetter infoGetter)
     {
-        pipeController = new PipeController<ResourceEnum, PipeInfo>(maxFlowPerTimestep, flowDelegate);
+        // Gonna do a pro gamer move and wrap the delegate with a cooler delegate
 
+        pipeController = new PipeController<ResourceEnum, PipeInfo>(maxFlowPerTimestep, UpdateTimers);
+
+        this.flowDelegate = flowDelegate;
         this.infoGetter = infoGetter;
+        this.weakStepCount = weakStepCount;
+        this.fatalStepCount = fatalStepCount;
         grid = new GridLocation[3, ySize, xSize];
         this.xSize = xSize;
         this.ySize = ySize;
@@ -39,9 +57,18 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
                             pipe = pipeController.CreateNonCore($"[Non core ({x},{y})]", infoGetter(x, y, z)),
                             hasRoot = false
                         };
+                    backRefs[grid[z,y,x].pipe] = grid[z,y,x];
                 }
             }
         }
+    }
+
+    public void UpdateTimers(PipeNode<ResourceEnum, PipeInfo> source, PipeNode<ResourceEnum, PipeInfo> destination,
+        ResourceEnum resourceType, int amount)
+    {
+        backRefs[source].stepsAtZero = 0;
+        backRefs[destination].stepsAtZero = 0;
+        flowDelegate(source, destination,resourceType, amount);
     }
 
     public void AddCore(int x, int y, string name)
@@ -53,6 +80,13 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
         }
 
         GridLocation replacedNode = grid[1, y, x];
+        backRefs.Remove(replacedNode.pipe);
+        if (!replacedNode.hasRoot)
+        {
+            replacedNode.stepsAtZero = 0;
+        }
+        replacedNode.hasRoot = false;
+
         PipeNode<ResourceEnum, PipeInfo> newCore = pipeController.CreateCore(name, infoGetter(x,y,1));
 
         foreach (var destination in replacedNode.pipe.GetBackReferencesCopy())
@@ -103,6 +137,7 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
         }
 
         grid[1, y, x].pipe = newCore;
+        backRefs[newCore] = grid[1, y, x];
     }
 
     public void AddRoot(int x, int y)
@@ -114,6 +149,7 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
         }
 
         GridLocation node = grid[1, y, x];
+        node.stepsAtZero = 0;
         node.hasRoot = true;
 
         node.pipe.AddAdjacent(grid[0, y, x].pipe);
@@ -173,7 +209,7 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
         }
     }
 
-    public void RemoveRoot(int x, int y)
+    public void RemoveNode(int x, int y)
     {
         GridLocation node = grid[1, y, x];
         PipeNode<ResourceEnum, PipeInfo> pipe = node.pipe;
@@ -186,37 +222,32 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
         {
             PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y, x - 1].pipe;
             pipe.RemoveAdjacent(neigh);
-            if (neigh.isCore)
-            {
-                neigh.RemoveAdjacent(pipe);
-            }
+            neigh.RemoveAdjacent(pipe);
         }
         if (x + 1 < xSize)
         {
             PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y, x + 1].pipe;
             pipe.RemoveAdjacent(neigh);
-            if (neigh.isCore)
-            {
-                neigh.RemoveAdjacent(pipe);
-            }
+            neigh.RemoveAdjacent(pipe);
         }
         if (y > 0)
         {
             PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y - 1, x].pipe;
             pipe.RemoveAdjacent(neigh);
-            if (neigh.isCore)
-            {
-                neigh.RemoveAdjacent(pipe);
-            }
+            neigh.RemoveAdjacent(pipe);
         }
         if (y + 1 < ySize)
         {
             PipeNode<ResourceEnum, PipeInfo> neigh = grid[1, y + 1, x].pipe;
             pipe.RemoveAdjacent(neigh);
-            if (neigh.isCore)
-            {
-                neigh.RemoveAdjacent(pipe);
-            }
+            neigh.RemoveAdjacent(pipe);
+        }
+
+        if (pipe.isCore)
+        {
+            backRefs.Remove(node.pipe);
+            node.pipe = pipeController.CreateNonCore($"[Non core ({x},{y})]", infoGetter(x, y, 1));
+            backRefs[node.pipe] = node;
         }
     }
 
@@ -232,8 +263,52 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
 
     public void DoFlows()
     {
+        for (int z = 0; z < 3; z++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                for (int x = 0; x < xSize; x++)
+                {
+                    grid[z, y, x].stepsAtZero++;
+                }
+            }
+        }
+
         pipeController.DoFlows();
+
+        newlyDeadNodes.Clear();
+        newlyWeakenedNodes.Clear();
+
+        for (int z = 0; z < 3; z++)
+        {
+            for (int y = 0; y < ySize; y++)
+            {
+                for (int x = 0; x < xSize; x++)
+                {
+                    if (grid[z, y, x].stepsAtZero == fatalStepCount)
+                    {
+                        newlyDeadNodes.Add(grid[z, y, x].pipe.Info);
+                    } 
+                    else if (grid[z,y,x].stepsAtZero == weakStepCount)
+                    {
+                        newlyWeakenedNodes.Add(grid[z, y, x].pipe.Info);
+                    }
+                }
+            }
+        }
     }
+
+    public void GetNodeHealthChanges(out IEnumerable<PipeInfo> newlyDeadNodes, out IEnumerable<PipeInfo> newlyWeakenedNodes)
+    {
+        newlyDeadNodes = this.newlyDeadNodes;
+        newlyWeakenedNodes = this.newlyWeakenedNodes;
+    }
+
+    public bool IsNodeHealthy(int x, int y)
+    {
+        return grid[1, y, x].stepsAtZero < weakStepCount;
+    }
+
 
     public void AddResource(int x, int y, int z, ResourceEnum res, int amount)
     {
