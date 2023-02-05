@@ -47,4 +47,11 @@ public class LayingPipe : MonoBehaviour
         PipeInspection(currentTile);
         tileMap.SetTile(currentTile, pipeTile[BinaryIndex]);
     }
+
+    public void AddCore(Vector3Int currentTile)
+    {
+        //TODO: add from selection of core sprites.
+        PipeInspection(currentTile);
+        tileMap.SetTile(currentTile, pipeTile[BinaryIndex]);
+    }
 }

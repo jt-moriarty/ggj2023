@@ -34,9 +34,6 @@ public class GameController : MonoBehaviour
     public TilemapLayer CurrentLayer { get; set; }
 
     [SerializeField]
-    private TileLayer midLayer;
-
-    [SerializeField]
     private Tilemap[] surfaceTilemaps;
 
     [SerializeField]
@@ -79,8 +76,9 @@ public class GameController : MonoBehaviour
     void Start()
     {
         pipePlacer = GetComponent<LayingPipe>();
-        rootPipeController = new RootPipeController<GameResource, Vector3Int>(midLayer.gridSizeX, midLayer.gridSizeY, 3, OnFlow, SaveTileIndex);
-        rootPipeController.AddCore(3, 3, "starting core");
+        rootPipeController = new RootPipeController<GameResource, Vector3Int>(rootLayer.gridSizeX, rootLayer.gridSizeY, 3, OnFlow, SaveTileIndex);
+        //rootPipeController.AddCore(3, 3, "starting core");
+        AddCore(3, 3);
 
         int i = 0;
         uiTiles = new List<Image>();
@@ -100,6 +98,14 @@ public class GameController : MonoBehaviour
 
 
         StartGame();
+    }
+
+    void AddCore(int x, int y)
+    {
+
+        pipePlacer.AddCore(new Vector3Int(x,y,0));
+        rootPipeController.AddCore(x, y, "starting core");
+
     }
 
     // Update is called once per frame
