@@ -3964,9 +3964,13 @@ MonoBehaviour:
   energyText: {fileID: 1818626448}
   pipePlacer: {fileID: 830477143}
   startingEnergy: 100
-  energyDecay: 0.1
-  coreCost: 10
-  rootCost: 5
+  energyDecay: 0.2
+  coreCost: 7
+  rootCost: 2
+  resourceAmount: 5
+  resourceFlowAmount: 5
+  resourceAddPeriod: 5
+  maxFlowPerTimestep: 6
   startingLayer: 1
   smallHealthyMushrooms:
   - {fileID: 11400000, guid: ae1916215f83af74a80f7bd1695076f1, type: 2}

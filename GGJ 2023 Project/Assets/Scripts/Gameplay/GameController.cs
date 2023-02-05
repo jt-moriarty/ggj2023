@@ -25,11 +25,18 @@ public class GameController : MonoBehaviour
 
     // Nutrients + Water from the soil + sunlight = energy in different amounts.
     public double Energy { get; set; }
-    public double startingEnergy = 100;
-    public double energyDecay = 0.1;
 
-    public double coreCost = 10;
-    public double rootCost = 5;
+    // BALANCE
+    public double startingEnergy = 100;
+    public double energyDecay = 0.2;
+
+    public int coreCost = 10;
+    public int rootCost = 5;
+    public int resourceAmount = 5;
+    public int resourceFlowAmount = 5;
+
+    public float resourceAddPeriod = 5f;
+    public int maxFlowPerTimestep = 3;
 
     public enum TilemapLayer { Surface = 2, Root = 1, Base = 0 }
 
@@ -112,7 +119,7 @@ public class GameController : MonoBehaviour
 
         pipePlacer.AddNode(mapPosDest, GetHealth, IsCore);
 
-        Vector3 startPos = rootTilemap.CellToWorld(mapPosSource) + Vector3.up*0.25f;
+        Vector3 startPos = rootTilemap.CellToWorld(mapPosSource) + Vector3.up * 0.25f;
         Vector3 endPos = rootTilemap.CellToWorld(mapPosDest) + Vector3.up * 0.25f;
         if (sourceNode.GetResource(res) > 0 || resToMove == null)
         {
@@ -148,7 +155,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         //pipePlacer = GetComponent<LayingPipe>();
-        rootPipeController = new RootPipeController<GameResource, Vector3Int>(rootLayer.gridSizeX, rootLayer.gridSizeY, 3,
+        rootPipeController = new RootPipeController<GameResource, Vector3Int>(rootLayer.gridSizeX, rootLayer.gridSizeY, maxFlowPerTimestep,
             5, 10, OnFlow, SaveTileIndex);
         //rootPipeController.AddCore(3, 3, "starting core");
         AddCore(3, 3);
@@ -175,7 +182,7 @@ public class GameController : MonoBehaviour
     void StartFlow()
     {
         flowCoro = StartCoroutine(FlowCoro(2f));
-        resourceCoro = StartCoroutine(ResourcePlaceCoro(5f));
+        resourceCoro = StartCoroutine(ResourcePlaceCoro(resourceAddPeriod));
     }
 
     bool IsFlowContinuing()
@@ -353,7 +360,7 @@ public class GameController : MonoBehaviour
 
         idx += new Vector2Int(3, 3);
         Debug.Log($"Adding {res} to ({idx.x},{idx.y},1)");
-        rootPipeController.AddResource(idx.x, idx.y, 1, res, 5);
+        rootPipeController.AddResource(idx.x, idx.y, 1, res, resourceAmount);
         rootPipeController.SetResourceObj(idx.x, idx.y, 1, res, resObj);
     }
 
@@ -401,7 +408,7 @@ public class GameController : MonoBehaviour
 
     void GainEnergy(Vector3Int info)
     {
-        int gain = rootPipeController.RemoveResource(info.x, info.y, 1, GameResource.energy, 5);
+        int gain = rootPipeController.RemoveResource(info.x, info.y, 1, GameResource.energy, resourceAmount);
         Debug.Log($"Gained {gain} energy");
         Energy += gain;
 

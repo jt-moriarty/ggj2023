@@ -617,7 +617,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 532177939
-  m_SortingLayer: -3
+  m_SortingLayer: -1
   m_SortingOrder: -2
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -3608,7 +3608,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 532177939
-  m_SortingLayer: -3
+  m_SortingLayer: -1
   m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -3796,7 +3796,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 478704591
-  m_SortingLayer: -1
+  m_SortingLayer: -3
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -3964,10 +3964,29 @@ MonoBehaviour:
   energyText: {fileID: 1818626448}
   pipePlacer: {fileID: 830477143}
   startingEnergy: 100
-  energyDecay: 0.1
+  energyDecay: 0.2
   coreCost: 10
   rootCost: 5
+  resourceAmount: 5
+  resourceFlowAmount: 5
+  resourceAddPeriod: 5
   startingLayer: 1
+  smallHealthyMushrooms:
+  - {fileID: 11400000, guid: ae1916215f83af74a80f7bd1695076f1, type: 2}
+  - {fileID: 11400000, guid: 3e7f7b00001ac9643a7c6b539ac6c631, type: 2}
+  - {fileID: 11400000, guid: b66b9359e9e30e94b8305cc4e65fe98e, type: 2}
+  smallUnhealthyMushrooms:
+  - {fileID: 11400000, guid: 5d21a2a3348185c41aeb15a3990ccd70, type: 2}
+  - {fileID: 11400000, guid: 8b999899d567ac941b24cbe75ffbdc4f, type: 2}
+  - {fileID: 11400000, guid: 6b20bdab468c4a04c982580d5c6f3288, type: 2}
+  healthyMushrooms:
+  - {fileID: 11400000, guid: 52276c31789dcb343b1c2f123e1ad666, type: 2}
+  - {fileID: 11400000, guid: 0c8570f59e0aeff44b2ffa648c0ac17b, type: 2}
+  - {fileID: 11400000, guid: 3316860025935ee45b3144f4fc2e65e9, type: 2}
+  unhealthyMushrooms:
+  - {fileID: 11400000, guid: 6422383f77327884c9767cdf1888b524, type: 2}
+  - {fileID: 11400000, guid: 02855fcb1f694674ab742f6e17868733, type: 2}
+  - {fileID: 11400000, guid: 776e0e354a9064e4f914648d8db43142, type: 2}
   surfaceTilemaps:
   - {fileID: 726264209}
   - {fileID: 1496562509}
@@ -3977,26 +3996,10 @@ MonoBehaviour:
   baseTilemaps:
   - {fileID: 833186467}
   - {fileID: 739439672}
+  mushroomTilemap: {fileID: 726264209}
   rootTilemap: {fileID: 1454793581}
   rootLayer: {fileID: 741404536}
-  rootTiles:
-  - {fileID: 11400000, guid: ca32ba744340432498773945c02ffac3, type: 2}
-  - {fileID: 11400000, guid: ad2a07d66063f1b4babdd8902d8a56b7, type: 2}
-  - {fileID: 11400000, guid: 8b186db1905fab343a952002a3a5b070, type: 2}
-  - {fileID: 11400000, guid: e2166fd7a26963e4c8bedf26ce5b82d9, type: 2}
-  - {fileID: 11400000, guid: ff5d78555664a5842a8ea1ceb107fb74, type: 2}
-  - {fileID: 11400000, guid: d49d4919f6a08bb43953fa56ced9384a, type: 2}
-  - {fileID: 11400000, guid: 1e171d6aee76c374e8f14083bce67031, type: 2}
-  - {fileID: 11400000, guid: 655ad783dae16c4479d854e48cad5765, type: 2}
-  - {fileID: 11400000, guid: 789b80eb376c2304f81918b68d688f10, type: 2}
-  - {fileID: 11400000, guid: 301cb544004178241a1a8c8bea4a4701, type: 2}
-  - {fileID: 11400000, guid: c06d07d0bf96e2e4da546fdd706c1c67, type: 2}
-  - {fileID: 11400000, guid: 6eefce5b54ee7fc41a1282b17badbded, type: 2}
-  - {fileID: 11400000, guid: 5be962bee7933dc41af5fc74701ba650, type: 2}
-  - {fileID: 11400000, guid: ac1dbb16fe5bb44469db66cdfce423b8, type: 2}
-  - {fileID: 11400000, guid: ae810c1e804e4fe4eb0fb4204c5b6155, type: 2}
   selectedTile: 0
-  uiTileGrid: {fileID: 0}
   energyPrefab: {fileID: 5857049672665332079, guid: f3394c47550b8294a88737b65f7ee178, type: 3}
 --- !u!4 &830477142
 Transform:
@@ -4043,6 +4046,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 301cb544004178241a1a8c8bea4a4701, type: 2}
   - {fileID: 11400000, guid: 789b80eb376c2304f81918b68d688f10, type: 2}
   - {fileID: 11400000, guid: 128cd5a631fc68347b13d7336e42dce7, type: 2}
+  weakPipeTiles: []
   coreTiles:
   - {fileID: 11400000, guid: c9f143a2b6e7f7641a6b31e7bbcf82c4, type: 2}
   - {fileID: 11400000, guid: 095be7c5224270043a7364f38b317573, type: 2}
@@ -4060,6 +4064,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 07d6bb886b94e3f408395d87064c1806, type: 2}
   - {fileID: 11400000, guid: 24bb83f2255a37548b0c2391cd224102, type: 2}
   - {fileID: 11400000, guid: 1e171d6aee76c374e8f14083bce67031, type: 2}
+  weakCoreTiles: []
 --- !u!114 &830477144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4146,7 +4151,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 478704591
-  m_SortingLayer: -1
+  m_SortingLayer: -3
   m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -4363,7 +4368,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 478704591
-  m_SortingLayer: -1
+  m_SortingLayer: -3
   m_SortingOrder: -2
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -4569,7 +4574,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 478704591
-  m_SortingLayer: -1
+  m_SortingLayer: -3
   m_SortingOrder: -1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -5026,7 +5031,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 532177939
-  m_SortingLayer: -3
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -5178,7 +5183,7 @@ TilemapRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 532177939
-  m_SortingLayer: -3
+  m_SortingLayer: -1
   m_SortingOrder: -1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
