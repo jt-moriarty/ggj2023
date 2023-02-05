@@ -39,6 +39,9 @@ public class GameController : MonoBehaviour
     private Tilemap rootTilemap;
 
     [SerializeField]
+    private TileLayer rootLayer;
+
+    [SerializeField]
     private Tile[] rootTiles;
     
     private List<Image> uiTiles;
@@ -85,6 +88,7 @@ public class GameController : MonoBehaviour
         var keyboard = Keyboard.current;
         var mouse = Mouse.current;
 
+        // TODO: mouse wheel as an option?
         if (keyboard.upArrowKey.wasPressedThisFrame && CurrentLayer < TilemapLayer.Surface)
         {
             SetActiveLayer(++CurrentLayer);
@@ -94,7 +98,7 @@ public class GameController : MonoBehaviour
             SetActiveLayer(--CurrentLayer);
         }
 
-        if (keyboard.leftArrowKey.wasPressedThisFrame)
+        /*if (keyboard.leftArrowKey.wasPressedThisFrame)
         {
             selectedTile--;
             if (selectedTile < 0)
@@ -105,18 +109,24 @@ public class GameController : MonoBehaviour
             selectedTile++;
             if (selectedTile > uiTiles.Count - 1)
                 selectedTile = 0;
-        }
+        }*/
 
-        if (mouse.leftButton.wasPressedThisFrame)
+        if (mouse.leftButton.wasPressedThisFrame && CurrentLayer == TilemapLayer.Root)
         {
             //Debug.Log("place TILE");
             Vector3 pos = Camera.main.ScreenToWorldPoint(mouse.position.ReadValue());
             //Debug.Log(pos);
             //Debug.Log(selectedTile);
             pos.z = 0;
-            pipePlacer.AddPipe(rootTilemap.WorldToCell(pos));
+
+            Vector3Int gridPos = rootTilemap.WorldToCell(pos);
+
+            if (rootLayer.InGridBounds(gridPos))
+                pipePlacer.AddPipe(gridPos);
             //rootTilemap.SetTile(rootTilemap.WorldToCell(pos), rootTiles[selectedTile]);
         }
+
+        //TODO: right click to place new mushroom + core on the root layer.
 
         SetSelectedTile(selectedTile);
 
