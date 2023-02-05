@@ -51,16 +51,16 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private TileLayer rootLayer;
 
-    [SerializeField]
-    private Tile[] rootTiles;
+    //[SerializeField]
+    //private Tile[] rootTiles;
     
     private List<Image> uiTiles;
 
     [SerializeField]
     private int selectedTile = 0;
 
-    [SerializeField]
-    private Transform uiTileGrid;
+    //[SerializeField]
+    //private Transform uiTileGrid;
 
     [SerializeField]
     private GameObject energyPrefab;
