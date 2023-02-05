@@ -4,7 +4,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-using PC = RootPipeController<RootPipeControllerTest.Res, UnityEngine.Vector3>;
+using RPC = RootPipeController<RootPipeControllerTest.Res, UnityEngine.Vector3>;
 using PN = PipeNode<RootPipeControllerTest.Res, UnityEngine.Vector3>;
 
 public class RootPipeControllerTest
@@ -20,7 +20,7 @@ public class RootPipeControllerTest
     public void RootPipeControllerTestSimplePasses()
     {
 
-        var controller = new PC(5, 5, 3,
+        var controller = new RPC(5, 5, 3, 5, 10,
             (src, dst, resType, amnt) =>
             {
                 Debug.Log($"Moving {amnt} {resType} from {src} (world position {src.Info}) to {dst} (world position {dst.Info})");

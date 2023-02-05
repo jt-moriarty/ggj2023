@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 using UnityEngine.UI;
+using static LayingPipe;
 
 public class GameController : MonoBehaviour
 {
@@ -64,6 +65,8 @@ public class GameController : MonoBehaviour
     private Coroutine flowCoro;
     private Coroutine resourceCoro;
 
+    private Dictionary<PipeNode<GameResource, Vector3Int>, int> timeWhileZeroEnergy = new Dictionary<PipeNode<GameResource, Vector3Int>, int>();
+
     private Vector3Int SaveTileIndex(int x, int y, int z)
     {
         return new Vector3Int(x, y, z);
@@ -83,8 +86,30 @@ public class GameController : MonoBehaviour
 
         GameObject resToMove = rootPipeController.GetResourceObj(sourceX, sourceY, sourceZ, res);
 
-        Vector3 startPos = rootTilemap.CellToWorld((Vector3Int)sourceNode.Info - new Vector3Int(3, 3, 0));
-        Vector3 endPos = rootTilemap.CellToWorld((Vector3Int)destNode.Info - new Vector3Int(3, 3, 0));
+
+        Vector3Int mapPosSource = sourceNode.Info - new Vector3Int(3, 3, 1);
+        Vector3Int mapPosDest = destNode.Info - new Vector3Int(3, 3, 1);
+
+        if (IsCore(mapPosSource.x, mapPosSource.y))
+        {
+            pipePlacer.AddCore(mapPosSource, GetHealth, IsCore);
+        }
+        else
+        {
+            pipePlacer.AddPipe(mapPosSource, GetHealth, IsCore);
+        }
+
+        if (IsCore(mapPosDest.y, mapPosDest.y))
+        {
+            pipePlacer.AddCore(mapPosDest, GetHealth, IsCore);
+        }
+        else
+        {
+            pipePlacer.AddPipe(mapPosDest, GetHealth, IsCore);
+        }
+
+        Vector3 startPos = rootTilemap.CellToWorld(mapPosSource) + Vector3.up*0.25f;
+        Vector3 endPos = rootTilemap.CellToWorld(mapPosDest) + Vector3.up * 0.25f;
         if (sourceNode.GetResource(res) > 0 || resToMove == null)
         {
             resToMove = GameObject.Instantiate(energyPrefab, startPos, Quaternion.identity);
@@ -93,6 +118,8 @@ public class GameController : MonoBehaviour
         {
             rootPipeController.SetResourceObj(sourceX, sourceY, sourceZ, res, null);
         }
+
+
 
         StartCoroutine(resToMove.GetComponent<TweenToTarget>().TweenPosition(startPos, endPos, 1f, () =>
         {
@@ -117,7 +144,8 @@ public class GameController : MonoBehaviour
     void Start()
     {
         //pipePlacer = GetComponent<LayingPipe>();
-        rootPipeController = new RootPipeController<GameResource, Vector3Int>(rootLayer.gridSizeX, rootLayer.gridSizeY, 3, OnFlow, SaveTileIndex);
+        rootPipeController = new RootPipeController<GameResource, Vector3Int>(rootLayer.gridSizeX, rootLayer.gridSizeY, 3,
+            5, 10, OnFlow, SaveTileIndex);
         //rootPipeController.AddCore(3, 3, "starting core");
         AddCore(3, 3);
 
@@ -178,11 +206,12 @@ public class GameController : MonoBehaviour
 
     void AddCore(int x, int y)
     {
-        pipePlacer.AddCore(new Vector3Int(x, y, 0), IsCore);
-        x += 3;
-        y += 3;
-        Debug.Log($"Adding core to ({x},{y})");
-        rootPipeController.AddCore(x, y, "starting core");
+        int logicalX = x + 3;
+        int logicalY = y + 3;
+        Debug.Log($"Adding core to ({logicalX},{logicalY})");
+        rootPipeController.AddCore(logicalX, logicalY, "starting core");
+
+        pipePlacer.AddCore(new Vector3Int(x, y, 0), GetHealth, IsCore);
     }
 
     // Update is called once per frame
@@ -218,9 +247,10 @@ public class GameController : MonoBehaviour
                 Vector3Int logicalPos = gridPos + new Vector3Int(3, 3, 0);
                 if (!rootPipeController.IsOccupied(logicalPos.x, logicalPos.y))
                 {
-                    pipePlacer.AddPipe(gridPos, IsCore);
                     Debug.Log($"Adding root to ({logicalPos.x}, {logicalPos.y})");
                     rootPipeController.AddRoot(logicalPos.x, logicalPos.y);
+
+                    pipePlacer.AddPipe(gridPos, GetHealth, IsCore);
                 }
             }
             //rootTilemap.SetTile(rootTilemap.WorldToCell(pos), rootTiles[selectedTile]);
@@ -239,7 +269,7 @@ public class GameController : MonoBehaviour
                 Vector3Int logicalPos = gridPos + new Vector3Int(3, 3, 0);
                 if (!rootPipeController.IsCore(logicalPos.x, logicalPos.y))
                 {
-                    pipePlacer.AddCore(gridPos, IsCore);
+                    pipePlacer.AddCore(gridPos, GetHealth, IsCore);
                     Debug.Log($"Adding core to ({logicalPos.x}, {logicalPos.y})");
                     rootPipeController.AddCore(logicalPos.x, logicalPos.y, "new core");
                 }
@@ -256,6 +286,21 @@ public class GameController : MonoBehaviour
         if (Energy <= 0) {
             EndGame();
         }
+    }
+
+    LayingPipe.HealthState GetHealth(int x, int y)
+    {
+        x += 3;
+        y += 3;
+        if (rootPipeController.IsNodeHealthy(x,y))
+        {
+            return HealthState.HEALTHY;
+        }
+        if (rootPipeController.IsOccupied(x,y))
+        {
+            return HealthState.WEAK;
+        }
+        return HealthState.DEAD;
     }
     
     bool IsCore(int x, int y)
@@ -301,6 +346,7 @@ public class GameController : MonoBehaviour
     void EndGame()
     {
         StopCoroutine(flowCoro);
+        StopCoroutine(resourceCoro);
         // Game over
         // TODO: more elaborate sequence or animation, for now just scene change.
         SceneManager.LoadScene("GameOverScene");
@@ -310,6 +356,33 @@ public class GameController : MonoBehaviour
     {
         Debug.Log($"performing flow");
         rootPipeController.DoFlows();
+
+        rootPipeController.GetNodeHealthChanges(out IEnumerable<Vector3Int> newlyDeadNodes,
+            out IEnumerable<Vector3Int> newlyWeakenedNodes);
+        
+
+
+        foreach (Vector3Int node in newlyDeadNodes)
+        {
+            rootPipeController.RemoveNode(node.x,node.y);
+        }
+
+        foreach (Vector3Int node in newlyDeadNodes)
+        {
+            pipePlacer.RemoveNode(new Vector3Int(node.x - 3, node.y - 3, 0), GetHealth, IsCore);
+        }
+
+        foreach (Vector3Int node in newlyWeakenedNodes)
+        {
+            if (rootPipeController.IsCore(node.x, node.y))
+            {
+                pipePlacer.AddCore(new Vector3Int(node.x - 3, node.y - 3, 0), GetHealth, IsCore);
+            }
+            else
+            {
+                pipePlacer.AddPipe(new Vector3Int(node.x - 3, node.y - 3, 0), GetHealth, IsCore);
+            }
+        }
     }
 
     void GainEnergy(Vector3Int info)
