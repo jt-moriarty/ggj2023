@@ -202,6 +202,11 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
         }
     }
 
+    public bool IsOccupied(int x, int y)
+    {
+        return (grid[1, y, x].hasRoot || grid[1, y, x].pipe.isCore);
+    }
+
     public void DoFlows()
     {
         pipeController.DoFlows();
