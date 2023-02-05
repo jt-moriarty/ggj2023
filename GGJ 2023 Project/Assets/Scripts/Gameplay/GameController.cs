@@ -9,11 +9,18 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+    enum GameResource
+    {
+        energy
+    }
+
     [SerializeField]
     private TextMeshProUGUI energyText;
 
     [SerializeField]
     private LayingPipe pipePlacer;
+
+    private RootPipeController<GameResource, Vector3Int> rootPipeController;
 
     // Nutrients + Water from the soil + sunlight = energy in different amounts.
     public double Energy { get; set; }
@@ -25,6 +32,9 @@ public class GameController : MonoBehaviour
     public TilemapLayer startingLayer = TilemapLayer.Surface;
 
     public TilemapLayer CurrentLayer { get; set; }
+
+    [SerializeField]
+    private TileLayer midLayer;
 
     [SerializeField]
     private Tilemap[] surfaceTilemaps;
@@ -55,10 +65,23 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private GameObject energyPrefab;
 
+    private Vector3Int SaveTileIndex(int x, int y, int z)
+    {
+        return new Vector3Int(x, y, z);
+    }
+
+    private void OnFlow(PipeNode<GameResource,Vector3Int> sourceNode, PipeNode<GameResource,Vector3Int> destNode, GameResource res, int amount)
+    {
+        Debug.Log($"Moving {amount} {res} from {sourceNode} (world position {sourceNode.Info}) to {destNode} (world position {destNode.Info})");
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         pipePlacer = GetComponent<LayingPipe>();
+        rootPipeController = new RootPipeController<GameResource, Vector3Int>(midLayer.gridSizeX, midLayer.gridSizeY, 3, OnFlow, SaveTileIndex);
+        rootPipeController.AddCore(3, 3, "starting core");
+
         int i = 0;
         uiTiles = new List<Image>();
         foreach (Tile tile in rootTiles)
@@ -118,12 +141,24 @@ public class GameController : MonoBehaviour
             //Debug.Log(pos);
             //Debug.Log(selectedTile);
             pos.z = 0;
-
             Vector3Int gridPos = rootTilemap.WorldToCell(pos);
 
             if (rootLayer.InGridBounds(gridPos))
                 pipePlacer.AddPipe(gridPos);
             //rootTilemap.SetTile(rootTilemap.WorldToCell(pos), rootTiles[selectedTile]);
+        }
+
+        if (mouse.rightButton.wasPressedThisFrame)
+        {
+            Vector3 pos = Camera.main.ScreenToWorldPoint(mouse.position.ReadValue());
+            Vector3Int idx = rootTilemap.WorldToCell(pos);
+            rootPipeController.AddResource(idx.x, idx.y, 0, GameResource.energy, 5);
+        }
+
+        if (keyboard.spaceKey.wasPressedThisFrame)
+        {
+            rootPipeController.DoFlows();
+            Energy += rootPipeController.RemoveResource(3, 3, 0, GameResource.energy, 5);
         }
 
         //TODO: right click to place new mushroom + core on the root layer.
