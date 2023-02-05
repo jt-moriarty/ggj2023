@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ public class TweenToTarget : MonoBehaviour
     [SerializeField]
     private AnimationCurve moveCurve;
 
-    IEnumerator TweenPosition(Vector3 source, Vector3 destination, float tweenTime)
+    public IEnumerator TweenPosition(Vector3 source, Vector3 destination, float tweenTime, Action onEnd)
     {
         float startTime = Time.time;
         while (Time.time - startTime < tweenTime)
@@ -18,5 +19,6 @@ public class TweenToTarget : MonoBehaviour
         }
 
         transform.localPosition = destination;
+        onEnd();
     }
 }
