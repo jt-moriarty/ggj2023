@@ -177,13 +177,11 @@ public class GameController : MonoBehaviour
 
     void AddCore(int x, int y)
     {
-
-        pipePlacer.AddCore(new Vector3Int(x,y,0));
+        pipePlacer.AddCore(new Vector3Int(x, y, 0), IsCore);
         x += 3;
         y += 3;
         Debug.Log($"Adding core to ({x},{y})");
         rootPipeController.AddCore(x, y, "starting core");
-
     }
 
     // Update is called once per frame
@@ -216,7 +214,7 @@ public class GameController : MonoBehaviour
 
             if (rootLayer.InGridBounds(gridPos))
             {
-                pipePlacer.AddPipe(gridPos);
+                pipePlacer.AddPipe(gridPos, IsCore);
                 gridPos += new Vector3Int(3, 3, 0);
                 Debug.Log($"Adding root to ({gridPos.x}, {gridPos.y})");
                 rootPipeController.AddRoot(gridPos.x,gridPos.y);
@@ -234,7 +232,7 @@ public class GameController : MonoBehaviour
 
             if (rootLayer.InGridBounds(gridPos))
             {
-                pipePlacer.AddCore(gridPos);
+                pipePlacer.AddCore(gridPos, IsCore);
                 gridPos += new Vector3Int(3, 3, 0);
                 Debug.Log($"Adding core to ({gridPos.x}, {gridPos.y})");
                 rootPipeController.AddCore(gridPos.x, gridPos.y, "new core");
@@ -251,6 +249,11 @@ public class GameController : MonoBehaviour
         if (Energy <= 0) {
             EndGame();
         }
+    }
+    
+    bool IsCore(int x, int y)
+    {
+        return rootPipeController.IsCore(x+3, y+3);
     }
 
     void PlaceRandomResource()
