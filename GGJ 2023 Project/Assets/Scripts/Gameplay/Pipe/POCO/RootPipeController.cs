@@ -113,9 +113,10 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
             {
                 neigh.pipe.AddAdjacent(node.pipe);
             }
-            else
-            { 
+            else if (neigh.hasRoot)
+            {
                 node.pipe.AddAdjacent(neigh.pipe);
+                neigh.pipe.AddAdjacent(node.pipe);
             }
         }
         if (x + 1 < xSize)
@@ -125,9 +126,10 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
             {
                 neigh.pipe.AddAdjacent(node.pipe);
             }
-            else
+            else if (neigh.hasRoot)
             {
                 node.pipe.AddAdjacent(neigh.pipe);
+                neigh.pipe.AddAdjacent(node.pipe);
             }
         }
         if (y > 0)
@@ -137,9 +139,10 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
             {
                 neigh.pipe.AddAdjacent(node.pipe);
             }
-            else
+            else if (neigh.hasRoot)
             {
                 node.pipe.AddAdjacent(neigh.pipe);
+                neigh.pipe.AddAdjacent(node.pipe);
             }
         }
         if (y + 1 < ySize)
@@ -149,9 +152,10 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
             {
                 neigh.pipe.AddAdjacent(node.pipe);
             }
-            else
+            else if (neigh.hasRoot)
             {
                 node.pipe.AddAdjacent(neigh.pipe);
+                neigh.pipe.AddAdjacent(node.pipe);
             }
         }
     }
