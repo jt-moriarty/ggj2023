@@ -3,7 +3,9 @@ tpsheetFileNames:
 - Assets/Art/Game/base.tpsheet
 - Assets/Art/Game/covers.tpsheet
 - Assets/Art/Game/dirt.tpsheet
+- Assets/Art/Game/fx.tpsheet
 - Assets/Art/Game/mushrooms.tpsheet
+- Assets/Art/Game/root_cores.tpsheet
 - Assets/Art/Game/roots.tpsheet
 - Assets/Art/Game/ui.tpsheet
 - Assets/Art/Game/water.tpsheet
@@ -12,12 +14,16 @@ textureFileNames:
 - Assets/Art/Game/base.png
 - Assets/Art/Game/covers.png
 - Assets/Art/Game/dirt.png
+- Assets/Art/Game/fx.png
 - Assets/Art/Game/mushrooms.png
+- Assets/Art/Game/root_cores.png
 - Assets/Art/Game/roots.png
 - Assets/Art/Game/ui.png
 - Assets/Art/Game/water.png
 - Assets/codeandweb.com/Example/SpriteSheet/sprites.png
 normalmapFileNames:
+- 
+- 
 - 
 - 
 - 

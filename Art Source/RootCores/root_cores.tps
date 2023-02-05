@@ -102,7 +102,7 @@
         <key>algorithmSettings</key>
         <struct type="AlgorithmSettings">
             <key>algorithm</key>
-            <enum type="AlgorithmSettings::AlgorithmId">MaxRects</enum>
+            <enum type="AlgorithmSettings::AlgorithmId">Basic</enum>
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
@@ -132,7 +132,7 @@
             <key>datafile</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../GGJ 2023 Project/Assets/Art/Game/ui.tpsheet</filename>
+                <filename>../../GGJ 2023 Project/Assets/Art/Game/root_cores.tpsheet</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -169,7 +169,7 @@
             <key>trimMargin</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">Crop</enum>
+            <enum type="SpriteSettings::TrimMode">None</enum>
             <key>tracerTolerance</key>
             <int>200</int>
             <key>heuristicMask</key>
@@ -181,53 +181,81 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">meter.png</key>
-            <key type="filename">meterBlobBottom.png</key>
-            <key type="filename">meterBlobMid.png</key>
-            <key type="filename">meterBlobTop.png</key>
-            <key type="filename">meterEmtpy.png</key>
-            <key type="filename">meterFull.png</key>
-            <key type="filename">meterWithBlobBottom.png</key>
-            <key type="filename">meterWithBlobMid.png</key>
-            <key type="filename">meterWithBlobTop.png</key>
+            <key type="filename">rootsOriginHealthy.png</key>
+            <key type="filename">rootsOriginWithered.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
+                <point_f>0.5,0.75</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>64,32,128,64</rect>
+                <rect>16,16,32,32</rect>
                 <key>scale9Paddings</key>
-                <rect>64,32,128,64</rect>
+                <rect>16,16,32,32</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">slice.png</key>
+            <key type="filename">rootsOriginI1Healthy.png</key>
+            <key type="filename">rootsOriginI1Withered.png</key>
+            <key type="filename">rootsOriginI2Healthy.png</key>
+            <key type="filename">rootsOriginI2Withered.png</key>
+            <key type="filename">rootsOriginL1Healthy.png</key>
+            <key type="filename">rootsOriginL1Withered.png</key>
+            <key type="filename">rootsOriginL2Healthy.png</key>
+            <key type="filename">rootsOriginL2Withered.png</key>
+            <key type="filename">rootsOriginL3Healthy.png</key>
+            <key type="filename">rootsOriginL3Withered.png</key>
+            <key type="filename">rootsOriginL4Healthy.png</key>
+            <key type="filename">rootsOriginL4Withered.png</key>
+            <key type="filename">rootsOriginOHealthy.png</key>
+            <key type="filename">rootsOriginOWithered.png</key>
+            <key type="filename">rootsOriginT1Healthy.png</key>
+            <key type="filename">rootsOriginT1Withered.png</key>
+            <key type="filename">rootsOriginT2Healthy.png</key>
+            <key type="filename">rootsOriginT2Withered.png</key>
+            <key type="filename">rootsOriginT3Healthy.png</key>
+            <key type="filename">rootsOriginT3Withered.png</key>
+            <key type="filename">rootsOriginT4Healthy.png</key>
+            <key type="filename">rootsOriginT4Withered.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
+                <point_f>0.5,0.8</point_f>
                 <key>scale9Enabled</key>
-                <true/>
+                <false/>
                 <key>scale9Borders</key>
-                <rect>10,10,12,12</rect>
+                <rect>16,20,32,40</rect>
                 <key>scale9Paddings</key>
-                <rect>8,8,16,16</rect>
+                <rect>16,20,32,40</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
         </map>
         <key>fileList</key>
         <array>
-            <filename>meterWithBlobTop.png</filename>
-            <filename>slice.png</filename>
-            <filename>meter.png</filename>
-            <filename>meterBlobBottom.png</filename>
-            <filename>meterBlobMid.png</filename>
-            <filename>meterBlobTop.png</filename>
-            <filename>meterWithBlobBottom.png</filename>
-            <filename>meterWithBlobMid.png</filename>
-            <filename>meterEmtpy.png</filename>
-            <filename>meterFull.png</filename>
+            <filename>rootsOriginHealthy.png</filename>
+            <filename>rootsOriginI1Healthy.png</filename>
+            <filename>rootsOriginI1Withered.png</filename>
+            <filename>rootsOriginI2Healthy.png</filename>
+            <filename>rootsOriginI2Withered.png</filename>
+            <filename>rootsOriginL1Healthy.png</filename>
+            <filename>rootsOriginL1Withered.png</filename>
+            <filename>rootsOriginL2Healthy.png</filename>
+            <filename>rootsOriginL2Withered.png</filename>
+            <filename>rootsOriginL3Healthy.png</filename>
+            <filename>rootsOriginL3Withered.png</filename>
+            <filename>rootsOriginL4Healthy.png</filename>
+            <filename>rootsOriginL4Withered.png</filename>
+            <filename>rootsOriginOHealthy.png</filename>
+            <filename>rootsOriginOWithered.png</filename>
+            <filename>rootsOriginT1Healthy.png</filename>
+            <filename>rootsOriginT1Withered.png</filename>
+            <filename>rootsOriginT2Healthy.png</filename>
+            <filename>rootsOriginT2Withered.png</filename>
+            <filename>rootsOriginT3Healthy.png</filename>
+            <filename>rootsOriginT3Withered.png</filename>
+            <filename>rootsOriginT4Healthy.png</filename>
+            <filename>rootsOriginT4Withered.png</filename>
+            <filename>rootsOriginWithered.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

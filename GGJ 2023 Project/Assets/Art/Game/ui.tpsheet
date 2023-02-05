@@ -4,7 +4,7 @@
 # To import these sprites into your Unity project, download "TexturePackerImporter":
 # https://www.codeandweb.com/texturepacker/unity
 #
-# $TexturePacker:SmartUpdate:e47c62593e3f5d0808ff0292e5f1746e:f7b1b4ad646794080b122340a23f32fd:0468195115ed5bbbcf55e2ca0092fcfa$
+# $TexturePacker:SmartUpdate:b8267fd2ab630608d249341ed1a59630:c201ae3f7e16854c8ccd549e217bb385:0468195115ed5bbbcf55e2ca0092fcfa$
 #
 :format=40300
 :texture=ui.png
@@ -13,10 +13,12 @@
 :borders=enabled
 
 meter;0;283;233;26; 0.5;0.5; 0;0;0;0
-meterBlobBottom;75;210;72;73; 0.5;0.5; 0;0;0;0
-meterBlobMid;0;212;75;71; 0.5;0.5; 0;0;0;0
-meterBlobTop;0;153;59;59; 0.5;0.5; 0;0;0;0
+meterBlobBottom;0;178;72;73; 0.5;0.5; 0;0;0;0
+meterBlobMid;0;107;75;71; 0.5;0.5; 0;0;0;0
+meterBlobTop;72;192;59;59; 0.5;0.5; 0;0;0;0
+meterEmtpy;0;267;223;16; 0.5;0.5; 0;0;0;0
+meterFull;0;251;223;16; 0.5;0.5; 0;0;0;0
 meterWithBlobBottom;0;368;255;73; 0.5;0.5; 0;0;0;0
 meterWithBlobMid;0;441;256;71; 0.5;0.5; 0;0;0;0
 meterWithBlobTop;0;309;249;59; 0.5;0.5; 0;0;0;0
-slice;147;251;32;32; 0.5;0.5; 10;10;10;10
+slice;223;251;32;32; 0.5;0.5; 10;10;10;10

@@ -102,7 +102,7 @@
         <key>algorithmSettings</key>
         <struct type="AlgorithmSettings">
             <key>algorithm</key>
-            <enum type="AlgorithmSettings::AlgorithmId">MaxRects</enum>
+            <enum type="AlgorithmSettings::AlgorithmId">Basic</enum>
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
@@ -132,7 +132,7 @@
             <key>datafile</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../GGJ 2023 Project/Assets/Art/Game/ui.tpsheet</filename>
+                <filename>../../GGJ 2023 Project/Assets/Art/Game/fx.tpsheet</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -169,7 +169,7 @@
             <key>trimMargin</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">Crop</enum>
+            <enum type="SpriteSettings::TrimMode">None</enum>
             <key>tracerTolerance</key>
             <int>200</int>
             <key>heuristicMask</key>
@@ -181,53 +181,69 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">meter.png</key>
-            <key type="filename">meterBlobBottom.png</key>
-            <key type="filename">meterBlobMid.png</key>
-            <key type="filename">meterBlobTop.png</key>
-            <key type="filename">meterEmtpy.png</key>
-            <key type="filename">meterFull.png</key>
-            <key type="filename">meterWithBlobBottom.png</key>
-            <key type="filename">meterWithBlobMid.png</key>
-            <key type="filename">meterWithBlobTop.png</key>
+            <key type="filename">drop1.png</key>
+            <key type="filename">drop2.png</key>
+            <key type="filename">drop3.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>64,32,128,64</rect>
+                <rect>8,4,16,8</rect>
                 <key>scale9Paddings</key>
-                <rect>64,32,128,64</rect>
+                <rect>8,4,16,8</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">slice.png</key>
+            <key type="filename">nutrientSpore.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
-                <true/>
+                <false/>
                 <key>scale9Borders</key>
-                <rect>10,10,12,12</rect>
+                <rect>2,2,4,4</rect>
                 <key>scale9Paddings</key>
-                <rect>8,8,16,16</rect>
+                <rect>2,2,4,4</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">raindrop.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>1,4,2,8</rect>
+                <key>scale9Paddings</key>
+                <rect>1,4,2,8</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">raindrop2.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>2,4,4,8</rect>
+                <key>scale9Paddings</key>
+                <rect>2,4,4,8</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
         </map>
         <key>fileList</key>
         <array>
-            <filename>meterWithBlobTop.png</filename>
-            <filename>slice.png</filename>
-            <filename>meter.png</filename>
-            <filename>meterBlobBottom.png</filename>
-            <filename>meterBlobMid.png</filename>
-            <filename>meterBlobTop.png</filename>
-            <filename>meterWithBlobBottom.png</filename>
-            <filename>meterWithBlobMid.png</filename>
-            <filename>meterEmtpy.png</filename>
-            <filename>meterFull.png</filename>
+            <filename>nutrientSpore.png</filename>
+            <filename>raindrop.png</filename>
+            <filename>raindrop2.png</filename>
+            <filename>drop1.png</filename>
+            <filename>drop2.png</filename>
+            <filename>drop3.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

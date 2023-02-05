@@ -1,0 +1,38 @@
+#
+# Sprite sheet data for Unity.
+#
+# To import these sprites into your Unity project, download "TexturePackerImporter":
+# https://www.codeandweb.com/texturepacker/unity
+#
+# $TexturePacker:SmartUpdate:8bff2226add7f6fae17cfecacfefaa22:6432cfc2d21d5e0253fb3d0eeab93355:f43629f5ac8caad0f4547a2fd8721114$
+#
+:format=40300
+:texture=root_cores.png
+:size=256x512
+:pivotpoints=enabled
+:borders=disabled
+
+rootsOriginHealthy;0;448;64;64; 0.5;0.25; 0;0;0;0
+rootsOriginI1Healthy;64;432;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginI1Withered;128;432;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginI2Healthy;192;432;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginI2Withered;0;352;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginL1Healthy;64;352;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginL1Withered;128;352;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginL2Healthy;192;352;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginL2Withered;0;272;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginL3Healthy;64;272;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginL3Withered;128;272;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginL4Healthy;192;272;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginL4Withered;0;192;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginOHealthy;64;192;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginOWithered;128;192;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginT1Healthy;192;192;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginT1Withered;0;112;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginT2Healthy;64;112;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginT2Withered;128;112;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginT3Healthy;192;112;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginT3Withered;0;32;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginT4Healthy;64;32;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginT4Withered;128;32;64;80; 0.5;0.19999999999999996; 0;0;0;0
+rootsOriginWithered;192;48;64;64; 0.5;0.25; 0;0;0;0
