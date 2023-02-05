@@ -1113,7 +1113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13f2a1a2b30bf0346b9ecc034a2f342a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sceneName: GameScreen
+  _sceneName: TutorialScene
   _async: 0
 --- !u!1 &519420028
 GameObject:
