@@ -72,7 +72,7 @@ public class GameController : MonoBehaviour
     private void OnFlow(PipeNode<GameResource,Vector3Int> sourceNode, PipeNode<GameResource,Vector3Int> destNode, GameResource res, int amount)
     {
         Debug.Log($"Moving {amount} {res} from {sourceNode} (world position {sourceNode.Info}) to {destNode} (world position {destNode.Info})");
-        if (destNode.Info == new Vector3Int(6,6,6))
+        if (destNode.Info == new Vector3Int(6,6,1))
         {
             GainEnergy();
         }
