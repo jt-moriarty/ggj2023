@@ -82,9 +82,10 @@ public class GameController : MonoBehaviour
         int destZ = destNode.Info.z;
 
         GameObject resToMove = rootPipeController.GetResourceObj(sourceX, sourceY, sourceZ, res);
-        Vector3 startPos = resToMove.transform.position;
+
+        Vector3 startPos = rootTilemap.CellToWorld((Vector3Int)sourceNode.Info - new Vector3Int(3, 3, 0));
         Vector3 endPos = rootTilemap.CellToWorld((Vector3Int)destNode.Info - new Vector3Int(3, 3, 0));
-        if (sourceNode.GetResource(res) > 0)
+        if (sourceNode.GetResource(res) > 0 || resToMove == null)
         {
             resToMove = GameObject.Instantiate(energyPrefab, startPos, Quaternion.identity);
         }
