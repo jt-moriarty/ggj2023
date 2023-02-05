@@ -204,9 +204,9 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
         grid[z, y, x].pipe.AddResource(res, amount);
     }
 
-    public void RemoveResource(int x, int y, int z, ResourceEnum res, int amount)
+    public int RemoveResource(int x, int y, int z, ResourceEnum res, int amount)
     {
-        grid[z, y, x].pipe.RemoveResource(res, amount);
+        return grid[z, y, x].pipe.RemoveResource(res, amount);
     }
 
     public int GetResource(int x, int y, int z, ResourceEnum res)
