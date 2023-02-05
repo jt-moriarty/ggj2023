@@ -252,7 +252,7 @@ public class GameController : MonoBehaviour
 
         Energy -= energyDecay * Time.deltaTime;
 
-        energyText.text = $"Energy: {Energy.ToString(".02")}";
+        energyText.text = $"{((int)Energy).ToString()}";
         if (Energy <= 0) {
             EndGame();
         }
