@@ -72,10 +72,44 @@ public class GameController : MonoBehaviour
     private void OnFlow(PipeNode<GameResource,Vector3Int> sourceNode, PipeNode<GameResource,Vector3Int> destNode, GameResource res, int amount)
     {
         Debug.Log($"Moving {amount} {res} from {sourceNode} (world position {sourceNode.Info}) to {destNode} (world position {destNode.Info})");
-        if (destNode.Info == new Vector3Int(6,6,1))
+
+        int sourceX = sourceNode.Info.x;
+        int sourceY = sourceNode.Info.y;
+        int sourceZ = sourceNode.Info.z;
+
+        int destX = destNode.Info.x;
+        int destY = destNode.Info.y;
+        int destZ = destNode.Info.z;
+
+        GameObject resToMove = rootPipeController.GetResourceObj(sourceX, sourceY, sourceZ, res);
+        Vector3 startPos = resToMove.transform.position;
+        Vector3 endPos = rootTilemap.CellToWorld((Vector3Int)destNode.Info - new Vector3Int(3, 3, 0));
+        if (sourceNode.GetResource(res) > 0)
         {
-            GainEnergy();
+            resToMove = GameObject.Instantiate(energyPrefab, startPos, Quaternion.identity);
         }
+        else 
+        {
+            rootPipeController.SetResourceObj(sourceX, sourceY, sourceZ, res, null);
+        }
+
+        StartCoroutine(resToMove.GetComponent<TweenToTarget>().TweenPosition(startPos, endPos, 1f, () =>
+        {
+            if (destNode.Info == new Vector3Int(6, 6, 1))
+            {
+                GainEnergy();
+            }
+
+            if (rootPipeController.GetResourceObj(destX, destY, destZ, res) != null
+            || destNode.GetResource(res) == 0)
+            {
+                GameObject.DestroyImmediate(resToMove);
+            } 
+            else
+            {
+                rootPipeController.SetResourceObj(destX, destY, destZ, res, resToMove);
+            }
+        }));
     }
 
     // Start is called before the first frame update
@@ -227,11 +261,12 @@ public class GameController : MonoBehaviour
 
         Vector3 gridPos = rootTilemap.CellToWorld((Vector3Int)idx);
         gridPos.y += 0.25f;
-        GameObject.Instantiate(energyPrefab, gridPos, Quaternion.identity);
+        GameObject resObj = GameObject.Instantiate(energyPrefab, gridPos, Quaternion.identity);
 
         idx += new Vector2Int(3, 3);
         Debug.Log($"Adding {res} to ({idx.x},{idx.y},1)");
         rootPipeController.AddResource(idx.x, idx.y, 1, res, 5);
+        rootPipeController.SetResourceObj(idx.x, idx.y, 1, res, resObj);
     }
 
     void EndGame()
@@ -253,6 +288,12 @@ public class GameController : MonoBehaviour
         int gain = rootPipeController.RemoveResource(6, 6, 1, GameResource.energy, 5);
         Debug.Log($"Gained {gain} energy");
         Energy += gain;
+
+        if (rootPipeController.GetResource(6,6,1,GameResource.energy) == 0)
+        {
+            GameObject obj = rootPipeController.GetResourceObj(6, 6, 1, GameResource.energy);
+            rootPipeController.SetResourceObj(6, 6, 1, GameResource.energy, null);
+        }
     }
 
     void SetActiveLayer (TilemapLayer newLayer)
