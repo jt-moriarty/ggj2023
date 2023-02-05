@@ -2520,7 +2520,7 @@ MonoBehaviour:
   resourceAmount: 10
   resourceFlowAmount: 10
   resourceAddPeriod: 5
-  maxFlowPerTimestep: 3
+  maxFlowPerTimestep: 6
   startingLayer: 1
   smallHealthyMushrooms:
   - {fileID: 11400000, guid: ae1916215f83af74a80f7bd1695076f1, type: 2}
