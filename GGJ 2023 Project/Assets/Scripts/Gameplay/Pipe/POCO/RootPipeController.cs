@@ -212,6 +212,11 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
         return (grid[1, y, x].hasRoot || grid[1, y, x].pipe.isCore);
     }
 
+    public bool IsCore(int x, int y)
+    {
+        return grid[1, y, x].pipe.isCore;
+    }
+
     public void DoFlows()
     {
         pipeController.DoFlows();
