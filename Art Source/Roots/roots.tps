@@ -225,6 +225,20 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">rootsTip0Healthy.png</key>
+            <key type="filename">rootsTip0Withered.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.75</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>16,16,32,32</rect>
+                <key>scale9Paddings</key>
+                <rect>16,16,32,32</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
         </map>
         <key>fileList</key>
         <array>
@@ -260,6 +274,8 @@
             <filename>rootsTip4Withered.png</filename>
             <filename>rootsXHealthy.png</filename>
             <filename>rootsXWithered.png</filename>
+            <filename>rootsTip0Healthy.png</filename>
+            <filename>rootsTip0Withered.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

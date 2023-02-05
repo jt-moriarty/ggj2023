@@ -204,8 +204,8 @@ TextureImporter:
       name: rootsL1Healthy
       rect:
         serializedVersion: 2
-        x: 0
-        y: 384
+        x: 256
+        y: 448
         width: 64
         height: 64
       alignment: 9
@@ -225,8 +225,8 @@ TextureImporter:
       name: rootsL1Withered
       rect:
         serializedVersion: 2
-        x: 64
-        y: 384
+        x: 320
+        y: 448
         width: 64
         height: 64
       alignment: 9
@@ -246,8 +246,8 @@ TextureImporter:
       name: rootsL2Healthy
       rect:
         serializedVersion: 2
-        x: 128
-        y: 384
+        x: 384
+        y: 448
         width: 64
         height: 64
       alignment: 9
@@ -267,8 +267,8 @@ TextureImporter:
       name: rootsL2Withered
       rect:
         serializedVersion: 2
-        x: 192
-        y: 384
+        x: 448
+        y: 448
         width: 64
         height: 64
       alignment: 9
@@ -289,7 +289,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 320
+        y: 384
         width: 64
         height: 64
       alignment: 9
@@ -310,7 +310,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 320
+        y: 384
         width: 64
         height: 64
       alignment: 9
@@ -331,7 +331,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 320
+        y: 384
         width: 64
         height: 64
       alignment: 9
@@ -352,7 +352,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 320
+        y: 384
         width: 64
         height: 64
       alignment: 9
@@ -372,8 +372,8 @@ TextureImporter:
       name: rootsOriginHealthy
       rect:
         serializedVersion: 2
-        x: 0
-        y: 256
+        x: 256
+        y: 384
         width: 64
         height: 64
       alignment: 9
@@ -393,8 +393,8 @@ TextureImporter:
       name: rootsOriginWithered
       rect:
         serializedVersion: 2
-        x: 64
-        y: 256
+        x: 320
+        y: 384
         width: 64
         height: 64
       alignment: 9
@@ -414,8 +414,8 @@ TextureImporter:
       name: rootsT1Healthy
       rect:
         serializedVersion: 2
-        x: 128
-        y: 256
+        x: 384
+        y: 384
         width: 64
         height: 64
       alignment: 9
@@ -435,8 +435,8 @@ TextureImporter:
       name: rootsT1Withered
       rect:
         serializedVersion: 2
-        x: 192
-        y: 256
+        x: 448
+        y: 384
         width: 64
         height: 64
       alignment: 9
@@ -457,7 +457,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 192
+        y: 320
         width: 64
         height: 64
       alignment: 9
@@ -478,7 +478,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 192
+        y: 320
         width: 64
         height: 64
       alignment: 9
@@ -499,7 +499,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 192
+        y: 320
         width: 64
         height: 64
       alignment: 9
@@ -520,7 +520,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 192
+        y: 320
         width: 64
         height: 64
       alignment: 9
@@ -540,8 +540,8 @@ TextureImporter:
       name: rootsT4Healthy
       rect:
         serializedVersion: 2
-        x: 0
-        y: 128
+        x: 256
+        y: 320
         width: 64
         height: 64
       alignment: 9
@@ -561,8 +561,8 @@ TextureImporter:
       name: rootsT4Withered
       rect:
         serializedVersion: 2
-        x: 64
-        y: 128
+        x: 320
+        y: 320
         width: 64
         height: 64
       alignment: 9
@@ -582,8 +582,8 @@ TextureImporter:
       name: rootsTio1Withered
       rect:
         serializedVersion: 2
-        x: 128
-        y: 128
+        x: 384
+        y: 320
         width: 64
         height: 64
       alignment: 9
@@ -603,8 +603,8 @@ TextureImporter:
       name: rootsTip1Healthy
       rect:
         serializedVersion: 2
-        x: 192
-        y: 128
+        x: 64
+        y: 256
         width: 64
         height: 64
       alignment: 9
@@ -624,8 +624,8 @@ TextureImporter:
       name: rootsTip2Healthy
       rect:
         serializedVersion: 2
-        x: 0
-        y: 64
+        x: 128
+        y: 256
         width: 64
         height: 64
       alignment: 9
@@ -645,8 +645,8 @@ TextureImporter:
       name: rootsTip2Withered
       rect:
         serializedVersion: 2
-        x: 64
-        y: 64
+        x: 192
+        y: 256
         width: 64
         height: 64
       alignment: 9
@@ -666,8 +666,8 @@ TextureImporter:
       name: rootsTip3Healthy
       rect:
         serializedVersion: 2
-        x: 128
-        y: 64
+        x: 256
+        y: 256
         width: 64
         height: 64
       alignment: 9
@@ -687,8 +687,8 @@ TextureImporter:
       name: rootsTip3Withered
       rect:
         serializedVersion: 2
-        x: 192
-        y: 64
+        x: 320
+        y: 256
         width: 64
         height: 64
       alignment: 9
@@ -708,8 +708,8 @@ TextureImporter:
       name: rootsTip4Healthy
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 384
+        y: 256
         width: 64
         height: 64
       alignment: 9
@@ -729,8 +729,8 @@ TextureImporter:
       name: rootsTip4Withered
       rect:
         serializedVersion: 2
-        x: 64
-        y: 0
+        x: 448
+        y: 256
         width: 64
         height: 64
       alignment: 9
@@ -750,8 +750,8 @@ TextureImporter:
       name: rootsXHealthy
       rect:
         serializedVersion: 2
-        x: 128
-        y: 0
+        x: 0
+        y: 192
         width: 64
         height: 64
       alignment: 9
@@ -771,8 +771,8 @@ TextureImporter:
       name: rootsXWithered
       rect:
         serializedVersion: 2
-        x: 192
-        y: 0
+        x: 64
+        y: 192
         width: 64
         height: 64
       alignment: 9
@@ -784,6 +784,48 @@ TextureImporter:
       bones: []
       spriteID: 990ed2a73b73002489a697409296a4e5
       internalID: -433419129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rootsTip0Healthy
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 320
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1149fb2199683a478cef076d49e34f8
+      internalID: -701091660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rootsTip0Withered
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da8be3e6a6adfad4daef4b562d860843
+      internalID: -1847374800
       vertices: []
       indices: 
       edges: []
@@ -800,6 +842,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       rootsOriginWithered: -96451596
+      rootsTip0Withered: -1847374800
       rootsT1Withered: -937040335
       rootsT2Healthy: -2090762016
       rootsTip4Withered: 994424528
@@ -825,6 +868,7 @@ TextureImporter:
       rootsL1Healthy: 759605565
       rootsTio1Withered: -886593833
       rootsT3Healthy: -834367036
+      rootsTip0Healthy: -701091660
       rootsTip1Healthy: 2049476219
       rootsL1Withered: -728430436
       rootsTip4Healthy: 1615732139

@@ -2587,7 +2587,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileMap: {fileID: 1454793581}
   pipeTile:
-  - {fileID: 11400000, guid: 5be962bee7933dc41af5fc74701ba650, type: 2}
+  - {fileID: 11400000, guid: ac942e8c25ec3734f8c868c205fae412, type: 2}
   - {fileID: 11400000, guid: ae810c1e804e4fe4eb0fb4204c5b6155, type: 2}
   - {fileID: 11400000, guid: 6eefce5b54ee7fc41a1282b17badbded, type: 2}
   - {fileID: 11400000, guid: 8b186db1905fab343a952002a3a5b070, type: 2}
@@ -2604,7 +2604,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 789b80eb376c2304f81918b68d688f10, type: 2}
   - {fileID: 11400000, guid: 128cd5a631fc68347b13d7336e42dce7, type: 2}
   weakPipeTiles:
-  - {fileID: 11400000, guid: d6aa0b504f41f5948b6ecb0a72ace614, type: 2}
+  - {fileID: 11400000, guid: b6569c2ad6a463a4ab0dce30857ac9e3, type: 2}
   - {fileID: 11400000, guid: 711b2f457f08b6e46b6a6d58f55cabf2, type: 2}
   - {fileID: 11400000, guid: 0560b25e069adf94d911531a1deddb92, type: 2}
   - {fileID: 11400000, guid: 1d29a0edb39adc141bb392b5f154187b, type: 2}
