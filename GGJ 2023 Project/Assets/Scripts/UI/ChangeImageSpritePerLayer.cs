@@ -28,6 +28,7 @@ public class ChangeImageSpritePerLayer : MonoBehaviour
     {
         if (prevLayer != controller.CurrentLayer)
         {
+            SetImage(controller.CurrentLayer);
             prevLayer = controller.CurrentLayer;
         }
     }

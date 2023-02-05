@@ -204,8 +204,8 @@ TextureImporter:
       name: rootsOriginI2Withered
       rect:
         serializedVersion: 2
-        x: 0
-        y: 352
+        x: 256
+        y: 432
         width: 64
         height: 80
       alignment: 9
@@ -225,8 +225,8 @@ TextureImporter:
       name: rootsOriginL1Healthy
       rect:
         serializedVersion: 2
-        x: 64
-        y: 352
+        x: 320
+        y: 432
         width: 64
         height: 80
       alignment: 9
@@ -246,8 +246,8 @@ TextureImporter:
       name: rootsOriginL1Withered
       rect:
         serializedVersion: 2
-        x: 128
-        y: 352
+        x: 384
+        y: 432
         width: 64
         height: 80
       alignment: 9
@@ -267,8 +267,8 @@ TextureImporter:
       name: rootsOriginL2Healthy
       rect:
         serializedVersion: 2
-        x: 192
-        y: 352
+        x: 448
+        y: 432
         width: 64
         height: 80
       alignment: 9
@@ -289,7 +289,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 272
+        y: 352
         width: 64
         height: 80
       alignment: 9
@@ -310,7 +310,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 272
+        y: 352
         width: 64
         height: 80
       alignment: 9
@@ -331,7 +331,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 272
+        y: 352
         width: 64
         height: 80
       alignment: 9
@@ -352,7 +352,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 272
+        y: 352
         width: 64
         height: 80
       alignment: 9
@@ -372,8 +372,8 @@ TextureImporter:
       name: rootsOriginL4Withered
       rect:
         serializedVersion: 2
-        x: 0
-        y: 192
+        x: 256
+        y: 352
         width: 64
         height: 80
       alignment: 9
@@ -393,8 +393,8 @@ TextureImporter:
       name: rootsOriginOHealthy
       rect:
         serializedVersion: 2
-        x: 64
-        y: 192
+        x: 320
+        y: 352
         width: 64
         height: 80
       alignment: 9
@@ -414,8 +414,8 @@ TextureImporter:
       name: rootsOriginOWithered
       rect:
         serializedVersion: 2
-        x: 128
-        y: 192
+        x: 384
+        y: 352
         width: 64
         height: 80
       alignment: 9
@@ -435,8 +435,8 @@ TextureImporter:
       name: rootsOriginT1Healthy
       rect:
         serializedVersion: 2
-        x: 192
-        y: 192
+        x: 448
+        y: 272
         width: 64
         height: 80
       alignment: 9
@@ -457,7 +457,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 112
+        y: 192
         width: 64
         height: 80
       alignment: 9
@@ -478,7 +478,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 112
+        y: 192
         width: 64
         height: 80
       alignment: 9
@@ -499,7 +499,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 128
-        y: 112
+        y: 192
         width: 64
         height: 80
       alignment: 9
@@ -520,7 +520,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 112
+        y: 192
         width: 64
         height: 80
       alignment: 9
@@ -540,8 +540,8 @@ TextureImporter:
       name: rootsOriginT3Withered
       rect:
         serializedVersion: 2
-        x: 0
-        y: 32
+        x: 256
+        y: 192
         width: 64
         height: 80
       alignment: 9
@@ -561,8 +561,8 @@ TextureImporter:
       name: rootsOriginT4Healthy
       rect:
         serializedVersion: 2
-        x: 64
-        y: 32
+        x: 320
+        y: 192
         width: 64
         height: 80
       alignment: 9
@@ -582,8 +582,8 @@ TextureImporter:
       name: rootsOriginT4Withered
       rect:
         serializedVersion: 2
-        x: 128
-        y: 32
+        x: 384
+        y: 192
         width: 64
         height: 80
       alignment: 9
@@ -603,8 +603,8 @@ TextureImporter:
       name: rootsOriginWithered
       rect:
         serializedVersion: 2
-        x: 192
-        y: 48
+        x: 448
+        y: 208
         width: 64
         height: 64
       alignment: 9
@@ -616,6 +616,174 @@ TextureImporter:
       bones: []
       spriteID: 80aa86dff288e874d8abb8800a463ecb
       internalID: -2047872450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rootsOriginSmall1Healthy
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 352
+        width: 64
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2c74fb8a5d171c43b95f689b4ffe167
+      internalID: -1691926684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rootsOriginSmall1Withered
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 272
+        width: 64
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c2ef9bf9458889344871714f4c2b5075
+      internalID: -660657512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rootsOriginSmall2Healthy
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 272
+        width: 64
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14bffbebb1e329943b2078ea99a6c183
+      internalID: -1341334128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rootsOriginSmall2Withered
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 272
+        width: 64
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c81ba4c0b49f794ab46d3f6b24ceb2c
+      internalID: 838075817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rootsOriginSmall3Healthy
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 272
+        width: 64
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0b8d42adfd7d7d4f938622e6f8ab761
+      internalID: -1459992153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rootsOriginSmall3Withered
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 272
+        width: 64
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 95fe53603eebdf44aa6d440538c9c669
+      internalID: -606325833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rootsOriginSmall4Healthy
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 272
+        width: 64
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c22828b1cc1b5144a96820a9cf0921c9
+      internalID: -2078084002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rootsOriginSmall4Withered
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 272
+        width: 64
+        height: 80
+      alignment: 9
+      pivot: {x: 0.5, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5006679530e12294ba38e892a4b53ab0
+      internalID: -1606679945
       vertices: []
       indices: 
       edges: []
@@ -632,14 +800,17 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       rootsOriginL3Healthy: -1212792185
+      rootsOriginSmall4Healthy: -2078084002
       rootsOriginWithered: -2047872450
       rootsOriginI2Healthy: -1596956294
       rootsOriginT1Withered: -190443791
       rootsOriginT3Healthy: -366929567
       rootsOriginT3Withered: 1293239144
       rootsOriginI1Healthy: 1896918099
+      rootsOriginSmall4Withered: -1606679945
       rootsOriginL2Withered: 381691931
       rootsOriginT2Healthy: 1765271204
+      rootsOriginSmall1Healthy: -1691926684
       rootsOriginL1Healthy: 2143997893
       rootsOriginT2Withered: 227559441
       rootsOriginI1Withered: 1051832689
@@ -647,11 +818,16 @@ TextureImporter:
       rootsOriginOHealthy: -600442032
       rootsOriginL4Healthy: 1189013631
       rootsOriginL2Healthy: 1940486689
+      rootsOriginSmall1Withered: -660657512
       rootsOriginL1Withered: 1073999299
       rootsOriginOWithered: 1442698867
       rootsOriginL3Withered: 1473365700
       rootsOriginL4Withered: -1513441224
+      rootsOriginSmall2Healthy: -1341334128
       rootsOriginI2Withered: -137493488
+      rootsOriginSmall3Healthy: -1459992153
+      rootsOriginSmall3Withered: -606325833
+      rootsOriginSmall2Withered: 838075817
       rootsOriginT4Healthy: 1665830682
       rootsOriginT4Withered: 1794068931
       rootsOriginHealthy: -1214557212

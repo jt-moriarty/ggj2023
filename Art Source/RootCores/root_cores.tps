@@ -209,6 +209,14 @@
             <key type="filename">rootsOriginL4Withered.png</key>
             <key type="filename">rootsOriginOHealthy.png</key>
             <key type="filename">rootsOriginOWithered.png</key>
+            <key type="filename">rootsOriginSmall1Healthy.png</key>
+            <key type="filename">rootsOriginSmall1Withered.png</key>
+            <key type="filename">rootsOriginSmall2Healthy.png</key>
+            <key type="filename">rootsOriginSmall2Withered.png</key>
+            <key type="filename">rootsOriginSmall3Healthy.png</key>
+            <key type="filename">rootsOriginSmall3Withered.png</key>
+            <key type="filename">rootsOriginSmall4Healthy.png</key>
+            <key type="filename">rootsOriginSmall4Withered.png</key>
             <key type="filename">rootsOriginT1Healthy.png</key>
             <key type="filename">rootsOriginT1Withered.png</key>
             <key type="filename">rootsOriginT2Healthy.png</key>
@@ -256,6 +264,14 @@
             <filename>rootsOriginT4Healthy.png</filename>
             <filename>rootsOriginT4Withered.png</filename>
             <filename>rootsOriginWithered.png</filename>
+            <filename>rootsOriginSmall4Withered.png</filename>
+            <filename>rootsOriginSmall1Healthy.png</filename>
+            <filename>rootsOriginSmall1Withered.png</filename>
+            <filename>rootsOriginSmall2Healthy.png</filename>
+            <filename>rootsOriginSmall2Withered.png</filename>
+            <filename>rootsOriginSmall3Healthy.png</filename>
+            <filename>rootsOriginSmall3Withered.png</filename>
+            <filename>rootsOriginSmall4Healthy.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
