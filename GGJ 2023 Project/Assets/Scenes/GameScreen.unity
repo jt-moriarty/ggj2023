@@ -2517,8 +2517,8 @@ MonoBehaviour:
   energyDecay: 0.2
   coreCost: 10
   rootCost: 5
-  resourceAmount: 5
-  resourceFlowAmount: 5
+  resourceAmount: 10
+  resourceFlowAmount: 10
   resourceAddPeriod: 5
   maxFlowPerTimestep: 3
   startingLayer: 1
