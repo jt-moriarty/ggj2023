@@ -211,6 +211,7 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
 
     public void RemoveNode(int x, int y)
     {
+        Debug.Log($"removing node at ({x},{y})");
         GridLocation node = grid[1, y, x];
         PipeNode<ResourceEnum, PipeInfo> pipe = node.pipe;
         node.hasRoot = false;
@@ -263,14 +264,11 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
 
     public void DoFlows()
     {
-        for (int z = 0; z < 3; z++)
+        for (int y = 0; y < ySize; y++)
         {
-            for (int y = 0; y < ySize; y++)
+            for (int x = 0; x < xSize; x++)
             {
-                for (int x = 0; x < xSize; x++)
-                {
-                    grid[z, y, x].stepsAtZero++;
-                }
+                grid[z, y, x].stepsAtZero++;
             }
         }
 
@@ -279,20 +277,21 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
         newlyDeadNodes.Clear();
         newlyWeakenedNodes.Clear();
 
-        for (int z = 0; z < 3; z++)
+        for (int y = 0; y < ySize; y++)
         {
-            for (int y = 0; y < ySize; y++)
+            for (int x = 0; x < xSize; x++)
             {
-                for (int x = 0; x < xSize; x++)
+                if (!IsOccupied(x, y))
                 {
-                    if (grid[z, y, x].stepsAtZero == fatalStepCount)
-                    {
-                        newlyDeadNodes.Add(grid[z, y, x].pipe.Info);
-                    } 
-                    else if (grid[z,y,x].stepsAtZero == weakStepCount)
-                    {
-                        newlyWeakenedNodes.Add(grid[z, y, x].pipe.Info);
-                    }
+                    continue;
+                }
+                if (grid[1, y, x].stepsAtZero == fatalStepCount)
+                {
+                    newlyDeadNodes.Add(grid[1, y, x].pipe.Info);
+                } 
+                else if (grid[1,y,x].stepsAtZero == weakStepCount)
+                {
+                    newlyWeakenedNodes.Add(grid[1, y, x].pipe.Info);
                 }
             }
         }
