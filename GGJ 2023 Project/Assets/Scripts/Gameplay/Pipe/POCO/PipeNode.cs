@@ -61,9 +61,9 @@ public class PipeNode<ResourceEnum, PipeInfo> where ResourceEnum : System.Enum
         return adjacents;
     }
 
-    public IEnumerable<PipeNode<ResourceEnum, PipeInfo>> GetBackReferences()
+    public ICollection<PipeNode<ResourceEnum, PipeInfo>> GetBackReferencesCopy()
     {
-        return backReference;
+        return new HashSet<PipeNode<ResourceEnum, PipeInfo>>(backReference);
     }
 
     public void AddAdjacent(PipeNode<ResourceEnum, PipeInfo> source)

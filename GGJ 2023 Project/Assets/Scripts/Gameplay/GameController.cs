@@ -215,10 +215,13 @@ public class GameController : MonoBehaviour
 
             if (rootLayer.InGridBounds(gridPos))
             {
-                pipePlacer.AddPipe(gridPos, IsCore);
-                gridPos += new Vector3Int(3, 3, 0);
-                Debug.Log($"Adding root to ({gridPos.x}, {gridPos.y})");
-                rootPipeController.AddRoot(gridPos.x,gridPos.y);
+                Vector3Int logicalPos = gridPos + new Vector3Int(3, 3, 0);
+                if (!rootPipeController.IsOccupied(logicalPos.x, logicalPos.y))
+                {
+                    pipePlacer.AddPipe(gridPos, IsCore);
+                    Debug.Log($"Adding root to ({logicalPos.x}, {logicalPos.y})");
+                    rootPipeController.AddRoot(logicalPos.x, logicalPos.y);
+                }
             }
             //rootTilemap.SetTile(rootTilemap.WorldToCell(pos), rootTiles[selectedTile]);
         }
@@ -233,10 +236,13 @@ public class GameController : MonoBehaviour
 
             if (rootLayer.InGridBounds(gridPos))
             {
-                pipePlacer.AddCore(gridPos, IsCore);
-                gridPos += new Vector3Int(3, 3, 0);
-                Debug.Log($"Adding core to ({gridPos.x}, {gridPos.y})");
-                rootPipeController.AddCore(gridPos.x, gridPos.y, "new core");
+                Vector3Int logicalPos = gridPos + new Vector3Int(3, 3, 0);
+                if (!rootPipeController.IsCore(logicalPos.x, logicalPos.y))
+                {
+                    pipePlacer.AddCore(gridPos, IsCore);
+                    Debug.Log($"Adding core to ({logicalPos.x}, {logicalPos.y})");
+                    rootPipeController.AddCore(logicalPos.x, logicalPos.y, "new core");
+                }
             }
         }
 
@@ -273,6 +279,11 @@ public class GameController : MonoBehaviour
                     locs.Add(new Vector2Int(x-3,y-3));
                 }
             }
+        }
+        if (locs.Count == 0)
+        {
+            Debug.LogError("Can't place any more resources. Consider autophagy.");
+            return;
         }
 
         Vector2Int idx = locs[Random.Range(0,locs.Count)];
