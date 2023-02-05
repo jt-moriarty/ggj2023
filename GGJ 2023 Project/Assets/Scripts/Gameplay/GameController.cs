@@ -288,11 +288,13 @@ public class GameController : MonoBehaviour
                 Vector3Int logicalPos = gridPos + new Vector3Int(3, 3, 0);
                 if (!rootPipeController.IsCore(logicalPos.x, logicalPos.y))
                 {
+                    AddMushroom(gridPos.x + 1, gridPos.y + 1);
                     Energy -= coreCost; 
                     Debug.Log($"Adding core to ({logicalPos.x}, {logicalPos.y})");
                     rootPipeController.AddCore(logicalPos.x, logicalPos.y, "new core");
 
                     pipePlacer.AddNode(gridPos, GetHealth, IsCore);
+
                 }
             }
         }

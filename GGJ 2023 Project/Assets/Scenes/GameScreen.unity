@@ -2516,7 +2516,7 @@ MonoBehaviour:
   startingEnergy: 100
   energyDecay: 0.2
   coreCost: 10
-  rootCost: 5
+  rootCost: 2
   resourceAmount: 10
   resourceFlowAmount: 10
   resourceAddPeriod: 5
