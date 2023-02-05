@@ -61,6 +61,8 @@ public class GameController : MonoBehaviour
 
     [SerializeField]
     private GameObject energyPrefab;
+    private Coroutine flowCoro;
+    private Coroutine resourceCoro;
 
     private Vector3Int SaveTileIndex(int x, int y, int z)
     {
@@ -70,6 +72,10 @@ public class GameController : MonoBehaviour
     private void OnFlow(PipeNode<GameResource,Vector3Int> sourceNode, PipeNode<GameResource,Vector3Int> destNode, GameResource res, int amount)
     {
         Debug.Log($"Moving {amount} {res} from {sourceNode} (world position {sourceNode.Info}) to {destNode} (world position {destNode.Info})");
+        if (destNode.Info == new Vector3Int(6,6,6))
+        {
+            GainEnergy();
+        }
     }
 
     // Start is called before the first frame update
@@ -96,8 +102,43 @@ public class GameController : MonoBehaviour
 
         //SetSelectedTile(selectedTile);
 
-
         StartGame();
+    }
+
+    void StartFlow()
+    {
+        flowCoro = StartCoroutine(FlowCoro(2f));
+        resourceCoro = StartCoroutine(ResourcePlaceCoro(5f));
+    }
+
+    bool IsFlowContinuing()
+    {
+        return Energy > 0;
+    }
+
+    IEnumerator FlowCoro(float period)
+    {
+        var pause = new WaitForSeconds(period);
+        yield return pause;
+        while (IsFlowContinuing())
+        {
+            DoFlow();
+            yield return pause;
+        }
+    }
+
+    IEnumerator ResourcePlaceCoro(float period)
+    {
+        var pause = new WaitForSeconds(period);
+
+        PlaceRandomResource();
+
+        yield return pause;
+        while (IsFlowContinuing())
+        {
+            PlaceRandomResource();
+            yield return pause;
+        }
     }
 
     void AddCore(int x, int y)
@@ -150,29 +191,6 @@ public class GameController : MonoBehaviour
         }
         else if (mouse.rightButton.wasPressedThisFrame && CurrentLayer == TilemapLayer.Root)
         {
-            Vector3 pos = Camera.main.ScreenToWorldPoint(mouse.position.ReadValue());
-            pos.z = 0;
-            
-            Vector3Int idx = rootTilemap.WorldToCell(pos);
-
-            Vector3 gridPos = rootTilemap.CellToWorld(idx);
-            Debug.Log($"pos: {pos}, int: {idx}, gridPos: {gridPos}");
-            //gridPos.x -= 0.5f;
-            gridPos.y += 0.25f;
-            GameObject.Instantiate(energyPrefab, gridPos, Quaternion.identity);
-
-            idx += new Vector3Int(3, 3, 0);
-            Debug.Log($"Adding energy to ({idx.x},{idx.y},1)");
-            rootPipeController.AddResource(idx.x, idx.y, 1, GameResource.energy, 5);
-        }
-
-        if (keyboard.spaceKey.wasPressedThisFrame)
-        {
-            Debug.Log($"performing flow");
-            rootPipeController.DoFlows();
-            int gain = rootPipeController.RemoveResource(6, 6, 1, GameResource.energy, 5);
-            Debug.Log($"Gained {gain} energy");
-            Energy += gain;
         }
 
         //TODO: right click to place new mushroom + core on the root layer.
@@ -183,10 +201,58 @@ public class GameController : MonoBehaviour
 
         energyText.text = $"Energy: {Energy.ToString(".02")}";
         if (Energy <= 0) {
-            // Game over
-            // TODO: more elaborate sequence or animation, for now just scene change.
-            SceneManager.LoadScene("GameOverScene");
+            EndGame();
         }
+    }
+
+    void PlaceRandomResource()
+    {
+        var resources = System.Enum.GetValues(typeof(GameResource));
+        var res = (GameResource)resources.GetValue(Random.Range(0,resources.Length));
+
+        List<Vector2Int> locs = new List<Vector2Int>();
+
+        for (int y = 0; y < rootLayer.gridSizeY; y++)
+        {
+            for (int x = 0; x < rootLayer.gridSizeX; x++)
+            {
+                if (!rootPipeController.IsOccupied(x,y))
+                {
+                    locs.Add(new Vector2Int(x-3,y-3));
+                }
+            }
+        }
+
+        Vector2Int idx = locs[Random.Range(0,locs.Count)];
+
+        Vector3 gridPos = rootTilemap.CellToWorld((Vector3Int)idx);
+        gridPos.y += 0.25f;
+        GameObject.Instantiate(energyPrefab, gridPos, Quaternion.identity);
+
+        idx += new Vector2Int(3, 3);
+        Debug.Log($"Adding {res} to ({idx.x},{idx.y},1)");
+        rootPipeController.AddResource(idx.x, idx.y, 1, res, 5);
+    }
+
+    void EndGame()
+    {
+        StopCoroutine(flowCoro);
+        // Game over
+        // TODO: more elaborate sequence or animation, for now just scene change.
+        SceneManager.LoadScene("GameOverScene");
+    }
+
+    void DoFlow()
+    {
+        Debug.Log($"performing flow");
+        rootPipeController.DoFlows();
+    }
+
+    void GainEnergy()
+    {
+        int gain = rootPipeController.RemoveResource(6, 6, 1, GameResource.energy, 5);
+        Debug.Log($"Gained {gain} energy");
+        Energy += gain;
     }
 
     void SetActiveLayer (TilemapLayer newLayer)
@@ -216,6 +282,7 @@ public class GameController : MonoBehaviour
     void StartGame() {
         Energy = startingEnergy;
         CurrentLayer = startingLayer;
+        StartFlow();
         SetActiveLayer(CurrentLayer);
     }
 }
