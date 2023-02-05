@@ -42,7 +42,13 @@ public class TileLayer : MonoBehaviour
 
     public bool InGridBounds(Vector3Int gridPos)
     {
-        //TODO: have this check playable area bounds for the layer.
-        return true;
+        if (gridPos.y <= gridSizeY -1 - offsetY && gridPos.y >= -offsetY && gridPos.x <= gridSizeX - 1 - offsetX && gridPos.x >= -offsetX)
+        {
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
     }
 }
