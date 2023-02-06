@@ -17,10 +17,11 @@ public class LayingPipe : MonoBehaviour
 
     public delegate bool IsCore(int x, int y);
     public delegate HealthState GetHealth(int x, int y);
-
+    public delegate int MushroomTypeFunc(int x, int y);
 
     //public TileLayer tileLayer;
     public Tilemap tileMap;
+    public Tilemap mushroomMap;
     //public Vector3Int[] placesToGo;
     public Tile[] pipeTile;
 
@@ -30,22 +31,26 @@ public class LayingPipe : MonoBehaviour
 
     [SerializeField]
     private Tile[] weakCoreTiles;
+
+
+    [SerializeField]
+    private Tile[] smallHealthyMushrooms;
+
+    [SerializeField]
+    private Tile[] smallUnhealthyMushrooms;
+
+    [SerializeField]
+    private Tile[] healthyMushrooms;
+
+    [SerializeField]
+    private Tile[] unhealthyMushrooms;
     //public Tile deadTile;
     //int BinaryIndex;
     //int count;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        //placesToGo = new Vector3Int[4];
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
-    void PipeInspection(Vector3Int currentTile, GetHealth getHealthFunc, IsCore isCoreFunc, bool recur)
+    void PipeInspection(Vector3Int currentTile, GetHealth getHealthFunc, IsCore isCoreFunc,
+        MushroomTypeFunc mushroomTypeFunc, bool recur)
     {
         bool isCore = isCoreFunc(currentTile.x,currentTile.y);
         List<Vector3Int> placesToGo = new List<Vector3Int>();
@@ -103,6 +108,26 @@ public class LayingPipe : MonoBehaviour
                 break;
         }
 
+        if ((isCore|| health == HealthState.DEAD) && recur)
+        {
+            Vector3Int mushroomIdx = currentTile + new Vector3Int(1, 1);
+            int tileIdx = mushroomTypeFunc(currentTile.x, currentTile.y);
+            switch (health)
+            {
+                case HealthState.HEALTHY:
+                    mushroomMap.SetTile(mushroomIdx, smallHealthyMushrooms[tileIdx]);
+                    break;
+
+                case HealthState.WEAK:
+                    mushroomMap.SetTile(mushroomIdx, smallUnhealthyMushrooms[tileIdx]);
+                    break;
+
+                case HealthState.DEAD:
+                    mushroomMap.SetTile(mushroomIdx, null);
+                    break;
+            }
+        }
+
         if (!recur)
         {
             return;
@@ -110,17 +135,22 @@ public class LayingPipe : MonoBehaviour
 
         foreach (var nextTilePos in placesToGo)
         {
-            PipeInspection(nextTilePos, getHealthFunc, isCoreFunc, false);
+            PipeInspection(nextTilePos, getHealthFunc, isCoreFunc, mushroomTypeFunc, false);
         }
     }
     
-    public void AddNode(Vector3Int currentTile, GetHealth getHealthFunc, IsCore isCoreFunc)
+    public void UpdateNode(Vector3Int currentTile, GetHealth getHealthFunc, IsCore isCoreFunc, MushroomTypeFunc mushroomTypeFunc)
     {
-        PipeInspection(currentTile, getHealthFunc, isCoreFunc, true);
+        PipeInspection(currentTile, getHealthFunc, isCoreFunc, mushroomTypeFunc, true);
     }
 
-    public void RemoveNode(Vector3Int currentTile, GetHealth getHealthFunc, IsCore isCoreFunc)
+    public void SetMushroomTiles(Tilemap mushroomMap, Tile[] smallHealthyMushrooms, Tile[] smallUnhealthyMushrooms,
+        Tile[] healthyMushrooms, Tile[] unhealthyMushrooms)
     {
-        PipeInspection(currentTile, getHealthFunc, isCoreFunc, true);
+        this.mushroomMap = mushroomMap;
+        this.smallHealthyMushrooms = smallHealthyMushrooms;
+        this.smallUnhealthyMushrooms = smallUnhealthyMushrooms;
+        this.healthyMushrooms = healthyMushrooms;
+        this.unhealthyMushrooms = unhealthyMushrooms;
     }
 }

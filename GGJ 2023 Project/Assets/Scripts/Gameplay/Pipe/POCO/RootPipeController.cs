@@ -6,22 +6,26 @@ using UnityEngine;
 public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enum
 {
 
-    private class GridLocation
+    public class GridLocation
     {
         public PipeNode<ResourceEnum, PipeInfo> pipe;
         public Dictionary<ResourceEnum, GameObject> resObj = new Dictionary<ResourceEnum, GameObject>();
         public bool hasRoot;
         public int stepsAtZero;
+
+        // 0 is unset
+        public int mushroomType;
     }
     private Dictionary<PipeNode<ResourceEnum, PipeInfo>, GridLocation> backRefs = new Dictionary<PipeNode<ResourceEnum, PipeInfo>, GridLocation>();
     public delegate PipeInfo InfoGetter(int x, int y, int z);
+    public delegate void OnFlow(GridLocation source, GridLocation destination, ResourceEnum resourceType, int amount);
 
     private readonly InfoGetter infoGetter;
     private PipeController<ResourceEnum, PipeInfo> pipeController;
     private GridLocation[,,] grid;
     private readonly int xSize;
     private readonly int ySize;
-    PipeController<ResourceEnum, PipeInfo>.OnFlow flowDelegate;
+    OnFlow flowDelegate;
 
     private readonly int weakStepCount;
     private readonly int fatalStepCount;
@@ -31,8 +35,7 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
     private HashSet<PipeInfo> newlyWeakenedNodes = new HashSet<PipeInfo>();
 
     public RootPipeController(int xSize, int ySize, int maxFlowPerTimestep,
-        int weakStepCount, int fatalStepCount,
-        PipeController<ResourceEnum, PipeInfo>.OnFlow flowDelegate, InfoGetter infoGetter)
+        int weakStepCount, int fatalStepCount, OnFlow flowDelegate, InfoGetter infoGetter)
     {
         // Gonna do a pro gamer move and wrap the delegate with a cooler delegate
 
@@ -66,9 +69,13 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
     public void UpdateTimers(PipeNode<ResourceEnum, PipeInfo> source, PipeNode<ResourceEnum, PipeInfo> destination,
         ResourceEnum resourceType, int amount)
     {
-        backRefs[source].stepsAtZero = 0;
-        backRefs[destination].stepsAtZero = 0;
-        flowDelegate(source, destination,resourceType, amount);
+        GridLocation srcLoc = backRefs[source];
+        srcLoc.stepsAtZero = 0;
+
+        GridLocation destLoc = backRefs[destination];
+        destLoc.stepsAtZero = 0;
+
+        flowDelegate(srcLoc, destLoc, resourceType, amount);
     }
 
     public void AddCore(int x, int y, string name)
@@ -332,5 +339,15 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
     public void SetResourceObj(int x, int y, int z, ResourceEnum res, GameObject obj)
     {
         grid[z, y, x].resObj[res] = obj;
+    }
+
+    public int GetMushroomType(int x, int y)
+    {
+        return grid[1, y, x].mushroomType-1;
+    }
+
+    public void SetMushroomType(int x, int y, int val)
+    {
+        grid[1, y, x].mushroomType = val+1;
     }
 }

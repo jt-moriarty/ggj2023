@@ -97,9 +97,14 @@ public class GameController : MonoBehaviour
         return new Vector3Int(x, y, z);
     }
 
-    private void OnFlow(PipeNode<GameResource,Vector3Int> sourceNode, PipeNode<GameResource,Vector3Int> destNode, GameResource res, int amount)
+    private void OnFlow(RootPipeController<GameResource,Vector3Int>.GridLocation sourceLoc,
+        RootPipeController<GameResource, Vector3Int>.GridLocation destLoc, GameResource res, int amount)
     {
-        Debug.Log($"Moving {amount} {res} from {sourceNode} (world position {sourceNode.Info}) to {destNode} (world position {destNode.Info})");
+        PipeNode<GameResource, Vector3Int> sourceNode = sourceLoc.pipe;
+        PipeNode<GameResource, Vector3Int> destNode = destLoc.pipe;
+
+        Debug.Log($"Moving {amount} {res} from {sourceNode} (world position {sourceNode.Info})" +
+            $" to {destNode} (world position {destNode.Info})");
 
         int sourceX = sourceNode.Info.x;
         int sourceY = sourceNode.Info.y;
@@ -111,13 +116,12 @@ public class GameController : MonoBehaviour
 
         GameObject resToMove = rootPipeController.GetResourceObj(sourceX, sourceY, sourceZ, res);
 
-
         Vector3Int mapPosSource = sourceNode.Info - new Vector3Int(3, 3, 1);
         Vector3Int mapPosDest = destNode.Info - new Vector3Int(3, 3, 1);
 
-        pipePlacer.AddNode(mapPosSource, GetHealth, IsCore);
+        pipePlacer.UpdateNode(mapPosSource, GetHealth, IsCore, MushroomTypeGetter);
 
-        pipePlacer.AddNode(mapPosDest, GetHealth, IsCore);
+        pipePlacer.UpdateNode(mapPosDest, GetHealth, IsCore, MushroomTypeGetter);
 
         Vector3 startPos = rootTilemap.CellToWorld(mapPosSource) + Vector3.up * 0.25f;
         Vector3 endPos = rootTilemap.CellToWorld(mapPosDest) + Vector3.up * 0.25f;
@@ -131,16 +135,17 @@ public class GameController : MonoBehaviour
         }
 
 
-
         StartCoroutine(resToMove.GetComponent<TweenToTarget>().TweenPosition(startPos, endPos, 1f, () =>
         {
-            if (destNode.isCore)
+            if (destLoc.pipe.isCore)
             {
-                GainEnergy(destNode.Info);
+                GainEnergy(destLoc.pipe.Info);
+                GameObject.DestroyImmediate(resToMove);
+                return;
             }
 
             if (rootPipeController.GetResourceObj(destX, destY, destZ, res) != null
-            || destNode.GetResource(res) == 0)
+            || destLoc.pipe.GetResource(res) == 0)
             {
                 GameObject.DestroyImmediate(resToMove);
             } 
@@ -149,6 +154,12 @@ public class GameController : MonoBehaviour
                 rootPipeController.SetResourceObj(destX, destY, destZ, res, resToMove);
             }
         }));
+    }
+
+    private void Awake()
+    {
+        pipePlacer.SetMushroomTiles(mushroomTilemap, smallHealthyMushrooms, smallUnhealthyMushrooms,
+            healthyMushrooms, unhealthyMushrooms);
     }
 
     // Start is called before the first frame update
@@ -221,14 +232,9 @@ public class GameController : MonoBehaviour
         int logicalY = y + 3;
         Debug.Log($"Adding core to ({logicalX},{logicalY})");
         rootPipeController.AddCore(logicalX, logicalY, "starting core");
+        rootPipeController.SetMushroomType(logicalX, logicalY, Random.Range(0, smallHealthyMushrooms.Length));
 
-        AddMushroom(x + 1, y + 1);
-        pipePlacer.AddNode(new Vector3Int(x, y, 0), GetHealth, IsCore);
-    }
-
-    void AddMushroom(int x, int y)
-    {
-        mushroomTilemap.SetTile(new Vector3Int(x, y, 0), smallHealthyMushrooms[Random.Range(0, smallHealthyMushrooms.Length)]);
+        pipePlacer.UpdateNode(new Vector3Int(x, y, 0), GetHealth, IsCore, MushroomTypeGetter);
     }
 
     // Update is called once per frame
@@ -269,7 +275,7 @@ public class GameController : MonoBehaviour
                     Debug.Log($"Adding root to ({logicalPos.x}, {logicalPos.y})");
                     rootPipeController.AddRoot(logicalPos.x, logicalPos.y);
                     
-                    pipePlacer.AddNode(gridPos, GetHealth, IsCore);
+                    pipePlacer.UpdateNode(gridPos, GetHealth, IsCore, MushroomTypeGetter);
                 }
             }
             //rootTilemap.SetTile(rootTilemap.WorldToCell(pos), rootTiles[selectedTile]);
@@ -288,13 +294,20 @@ public class GameController : MonoBehaviour
                 Vector3Int logicalPos = gridPos + new Vector3Int(3, 3, 0);
                 if (!rootPipeController.IsCore(logicalPos.x, logicalPos.y))
                 {
-                    AddMushroom(gridPos.x + 1, gridPos.y + 1);
                     Energy -= coreCost; 
                     Debug.Log($"Adding core to ({logicalPos.x}, {logicalPos.y})");
                     rootPipeController.AddCore(logicalPos.x, logicalPos.y, "new core");
+                    rootPipeController.SetMushroomType(logicalPos.x, logicalPos.y, Random.Range(0, smallHealthyMushrooms.Length));
 
-                    pipePlacer.AddNode(gridPos, GetHealth, IsCore);
-
+                    pipePlacer.UpdateNode(gridPos, GetHealth, IsCore, MushroomTypeGetter);
+                    int res = rootPipeController.GetResource(logicalPos.x, logicalPos.y, 1, GameResource.energy);
+                    Energy += res;
+                    rootPipeController.RemoveResource(logicalPos.x, logicalPos.y, 1, GameResource.energy,res);
+                    GameObject resObj = rootPipeController.GetResourceObj(logicalPos.x, logicalPos.y, 1, GameResource.energy);
+                    if (resObj != null)
+                    {
+                        GameObject.DestroyImmediate(resObj);
+                    }
                 }
             }
         }
@@ -329,6 +342,11 @@ public class GameController : MonoBehaviour
     bool IsCore(int x, int y)
     {
         return rootPipeController.IsCore(x+3, y+3);
+    }
+
+    int MushroomTypeGetter(int x, int y)
+    {
+        return rootPipeController.GetMushroomType(x+3, y+3);
     }
 
     void PlaceRandomResource()
@@ -383,28 +401,20 @@ public class GameController : MonoBehaviour
         rootPipeController.GetNodeHealthChanges(out IEnumerable<Vector3Int> newlyDeadNodes,
             out IEnumerable<Vector3Int> newlyWeakenedNodes);
         
-
-
         foreach (Vector3Int node in newlyDeadNodes)
         {
             rootPipeController.RemoveNode(node.x,node.y);
+            rootPipeController.SetMushroomType(node.x, node.y, -1);
         }
 
         foreach (Vector3Int node in newlyDeadNodes)
         {
-            pipePlacer.RemoveNode(new Vector3Int(node.x - 3, node.y - 3, 0), GetHealth, IsCore);
+            pipePlacer.UpdateNode(new Vector3Int(node.x - 3, node.y - 3, 0), GetHealth, IsCore, MushroomTypeGetter);
         }
 
         foreach (Vector3Int node in newlyWeakenedNodes)
         {
-            if (rootPipeController.IsCore(node.x, node.y))
-            {
-                pipePlacer.AddNode(new Vector3Int(node.x - 3, node.y - 3, 0), GetHealth, IsCore);
-            }
-            else
-            {
-                pipePlacer.AddNode(new Vector3Int(node.x - 3, node.y - 3, 0), GetHealth, IsCore);
-            }
+            pipePlacer.UpdateNode(new Vector3Int(node.x - 3, node.y - 3, 0), GetHealth, IsCore, MushroomTypeGetter);
         }
     }
 
