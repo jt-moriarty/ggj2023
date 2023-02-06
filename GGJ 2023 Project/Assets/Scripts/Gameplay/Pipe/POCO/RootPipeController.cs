@@ -12,6 +12,9 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
         public Dictionary<ResourceEnum, GameObject> resObj = new Dictionary<ResourceEnum, GameObject>();
         public bool hasRoot;
         public int stepsAtZero;
+
+        // 0 is unset
+        public int mushroomType;
     }
     private Dictionary<PipeNode<ResourceEnum, PipeInfo>, GridLocation> backRefs = new Dictionary<PipeNode<ResourceEnum, PipeInfo>, GridLocation>();
     public delegate PipeInfo InfoGetter(int x, int y, int z);
@@ -336,5 +339,15 @@ public class RootPipeController<ResourceEnum, PipeInfo> where ResourceEnum : Enu
     public void SetResourceObj(int x, int y, int z, ResourceEnum res, GameObject obj)
     {
         grid[z, y, x].resObj[res] = obj;
+    }
+
+    public int GetMushroomType(int x, int y)
+    {
+        return grid[1, y, x].mushroomType-1;
+    }
+
+    public void SetMushroomType(int x, int y, int val)
+    {
+        grid[1, y, x].mushroomType = val+1;
     }
 }
