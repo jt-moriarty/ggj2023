@@ -23,7 +23,8 @@ public class RootPipeControllerTest
         var controller = new RPC(5, 5, 3, 5, 10,
             (src, dst, resType, amnt) =>
             {
-                Debug.Log($"Moving {amnt} {resType} from {src} (world position {src.Info}) to {dst} (world position {dst.Info})");
+                Debug.Log($"Moving {amnt} {resType} from {src.pipe} (world position {src.pipe.Info}) to {dst.pipe}" +
+                    $" (world position {dst.pipe.Info})");
             }, (x, y, z) => 
             {
                 return x * new Vector3(1, 0.25f, 0)

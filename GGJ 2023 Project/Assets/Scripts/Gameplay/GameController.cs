@@ -97,9 +97,14 @@ public class GameController : MonoBehaviour
         return new Vector3Int(x, y, z);
     }
 
-    private void OnFlow(PipeNode<GameResource,Vector3Int> sourceNode, PipeNode<GameResource,Vector3Int> destNode, GameResource res, int amount)
+    private void OnFlow(RootPipeController<GameResource,Vector3Int>.GridLocation sourceLoc,
+        RootPipeController<GameResource, Vector3Int>.GridLocation destLoc, GameResource res, int amount)
     {
-        Debug.Log($"Moving {amount} {res} from {sourceNode} (world position {sourceNode.Info}) to {destNode} (world position {destNode.Info})");
+        PipeNode<GameResource, Vector3Int> sourceNode = sourceLoc.pipe;
+        PipeNode<GameResource, Vector3Int> destNode = destLoc.pipe;
+
+        Debug.Log($"Moving {amount} {res} from {sourceNode} (world position {sourceNode.Info})" +
+            $" to {destNode} (world position {destNode.Info})");
 
         int sourceX = sourceNode.Info.x;
         int sourceY = sourceNode.Info.y;
@@ -110,7 +115,6 @@ public class GameController : MonoBehaviour
         int destZ = destNode.Info.z;
 
         GameObject resToMove = rootPipeController.GetResourceObj(sourceX, sourceY, sourceZ, res);
-
 
         Vector3Int mapPosSource = sourceNode.Info - new Vector3Int(3, 3, 1);
         Vector3Int mapPosDest = destNode.Info - new Vector3Int(3, 3, 1);
@@ -131,16 +135,17 @@ public class GameController : MonoBehaviour
         }
 
 
-
         StartCoroutine(resToMove.GetComponent<TweenToTarget>().TweenPosition(startPos, endPos, 1f, () =>
         {
-            if (destNode.isCore)
+            if (destLoc.pipe.isCore)
             {
-                GainEnergy(destNode.Info);
+                GainEnergy(destLoc.pipe.Info);
+                GameObject.DestroyImmediate(resToMove);
+                return;
             }
 
             if (rootPipeController.GetResourceObj(destX, destY, destZ, res) != null
-            || destNode.GetResource(res) == 0)
+            || destLoc.pipe.GetResource(res) == 0)
             {
                 GameObject.DestroyImmediate(resToMove);
             } 
@@ -294,7 +299,14 @@ public class GameController : MonoBehaviour
                     rootPipeController.AddCore(logicalPos.x, logicalPos.y, "new core");
 
                     pipePlacer.AddNode(gridPos, GetHealth, IsCore);
-
+                    int res = rootPipeController.GetResource(logicalPos.x, logicalPos.y, 1, GameResource.energy);
+                    Energy += res;
+                    rootPipeController.RemoveResource(logicalPos.x, logicalPos.y, 1, GameResource.energy,res);
+                    GameObject resObj = rootPipeController.GetResourceObj(logicalPos.x, logicalPos.y, 1, GameResource.energy);
+                    if (resObj != null)
+                    {
+                        GameObject.DestroyImmediate(resObj);
+                    }
                 }
             }
         }
